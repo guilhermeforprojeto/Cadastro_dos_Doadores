@@ -19,6 +19,21 @@ export default function Header() {
           <li className="nav-item">
             <Link to="/happy-day" className="nav-link">Happy Day</Link>
           </li>
+          <li className="nav-item">
+            <Link to="/assistente" className="nav-link">Assistente</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/assistidos" className="nav-link">Assistidos</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/celula" className="nav-link">Celula</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/doador" className="nav-link">Doador</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/frente-assistidos" className="nav-link">Frente Assistidos</Link>
+          </li>
         </ul>
       </nav>
     </header>
