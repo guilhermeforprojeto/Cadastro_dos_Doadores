@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import './scacolaForm.css'
 import { ToastContainer, toast } from 'react-toastify';
 import { API } from '../../../assets/api/api';
 import Notify from '../../../components/react-toastify/react-toastify';
@@ -127,11 +127,10 @@ const SacolaForm: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className='container'>
       <Notify notificacao={noti} />
-
-      <h1>Cadastro de Sacolinhas</h1>
-      <form onSubmit={handleSubmit}>
+      <form className='container-form' onSubmit={handleSubmit}>
+        <h1>Cadastro de Sacolinhas</h1>
         <div>
           <label>Código</label>
           <input
