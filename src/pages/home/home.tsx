@@ -7,7 +7,7 @@ export default function Home() {
 
     <>
       {/* <div className='home' >Paz do senhor Jesus!</div> */}
-      <BibleVerseWidget />
+      {/* <BibleVerseWidget /> */}
 
       <AssistenteForm />
     </>

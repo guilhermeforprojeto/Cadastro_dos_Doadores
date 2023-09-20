@@ -1,3 +1,54 @@
+# Cadastro_dos_Doadores
+
+Cadastro dos Doadores - Sacolinhas Happy Day 2022
+
+regras de negocio
+
+NOME DO ASSISTENTE SOCIAL
+
+- id
+- Nome
+- Cel
+
+Frete Assistida
+
+- id
+- nome
+- Sacolinhas
+
+Sacola
+
+- id
+- codigo Sacolinha
+- codigo Assistido
+- codigo Frente Assistida
+- codigo Doador
+
+Assistido
+
+- id
+- codigo
+- nome
+- cpf
+- codigo Sacolinha
+- codigo Frete Assistida
+
+DOADOR
+
+- id
+- nome
+- contato (WHATSAPP)
+- Sacolinhas
+
+CÉLULA QUE FREQUENTA
+
+- id
+- nome
+
+OBSERVAÇÕES
+
+- id
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

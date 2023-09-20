@@ -9,6 +9,8 @@ import {
   deleteItemFromStorage,
   clearItemFromStorage
 } from '../../../services/storage/storage';
+import { Link, Router } from 'react-router-dom';
+import DoadorForm from '../doador/doadorForm';
 
 
 interface Sacola {
@@ -58,6 +60,9 @@ const AssistenteForm: React.FC = () => {
     console.log(formData)
     clearItemFromStorage()
     addItemToStorage('NomeAssistente', formData.nome);
+
+    window.location.href = '/doador';
+
 
     // try {
     //   const response = await API.post('/assistidos', formData); // Substitua pela sua rota de API
