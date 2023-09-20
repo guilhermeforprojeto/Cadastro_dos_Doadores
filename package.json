@@ -9,6 +9,7 @@
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.52",
     "@types/react": "^18.2.21",
+    "@types/react-burger-menu": "^2.8.3",
     "@types/react-dom": "^18.2.7",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.5.0",

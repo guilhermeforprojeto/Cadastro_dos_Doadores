@@ -4,11 +4,11 @@ import './index.css';
 
 export default function Header() {
   return (
-    <header className="header">
+    <header className="headerclass">
       <div className="logo">
         <h1>Sacolinhas Happy Day 2023</h1>
       </div>
-      <nav className="nav">
+      <nav className="navClass">
         <ul className="nav-list">
           <li className="nav-item">
             <Link to="/" className="nav-link">Home</Link>
@@ -17,7 +17,7 @@ export default function Header() {
             <Link to="/sacola" className="nav-link">Sacola</Link>
           </li>
           <li className="nav-item">
-            <Link to="/happy-day" className="nav-link">Happy Day</Link>
+            <Link to="/happydayform" className="nav-link">Happy Day</Link>
           </li>
           <li className="nav-item">
             <Link to="/assistente" className="nav-link">Assistente</Link>

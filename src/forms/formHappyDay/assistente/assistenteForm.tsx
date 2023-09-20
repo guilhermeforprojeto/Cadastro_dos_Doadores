@@ -142,7 +142,7 @@ const AssistenteForm: React.FC = () => {
           />
         </div> */}
         <div>
-          <label>Qual seu ome</label>
+          <label>Qual seu nome?</label>
           <input
             type="text"
             name="conteudo"

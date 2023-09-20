@@ -1,11 +1,18 @@
 .footer {
-  background-color: #f7dece;
-  color: #2d2e2c;
-  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  /* Ajuste o valor de 'left' conforme necessário */
+  width: 100%;
+  background-color: #333;
+  /* Cor de fundo do footer */
+  color: #fff;
+  /* Cor do texto do footer */
   padding: 10px;
-  font-size: 14px;
+  /* Espaçamento interno do footer */
+  text-align: center;
+  /* Alinhe o conteúdo ao centro */
 }
-
 
 /* .color1 { #f7dece };
 .color2 { #eed7c5 };
