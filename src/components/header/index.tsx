@@ -1,41 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './index.css';
+import './header.css';
+
+
 
 export default function Header() {
+  const [mostraMenus, setMostratMenus] = useState<boolean>(false)
+  const toggleMenu = () => {
+    mostraMenus === false ?
+      setMostratMenus(true) :
+      setMostratMenus(false)
+    console.log(mostraMenus)
+  }
   return (
-    <header className="headerclass">
-      <div className="logo">
-        <h1>Sacolinhas Happy Day 2023</h1>
-      </div>
-      <nav className="navClass">
-        <ul className="nav-list">
-          <li className="nav-item">
-            <Link to="/" className="nav-link">Home</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/sacola" className="nav-link">Sacola</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/happydayform" className="nav-link">Happy Day</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/assistente" className="nav-link">Assistente</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/assistidos" className="nav-link">Assistidos</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/celula" className="nav-link">Celula</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/doador" className="nav-link">Doador</Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/frente-assistidos" className="nav-link">Frente Assistidos</Link>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <>
+      <header className="headerclass">
+        <div className="logo">
+          <h1><Link to="/" className="nav-link">Sacolinhas Happy Day 2023</Link></h1>
+        </div>
+        <div id="headerMenu">
+          <button id="hamburger-menu" onClick={toggleMenu}>
+            <i className="fas fa-bars"></i>
+          </button>
+        </div>
+      </header>
+      <body>
+        {mostraMenus ?
+          <div onClick={toggleMenu} className='navClass'>
+            <nav className="navClassContexto">
+              <ul className="nav-list">
+                <li className="nav-item">
+                  <Link to="/" className="nav-link">Home</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/sacola" className="nav-link">Sacola</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/happydayform" className="nav-link">Happy Day</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/assistente" className="nav-link">Assistente</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/assistidos" className="nav-link">Assistidos</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/celula" className="nav-link">Celula</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/doador" className="nav-link">Doador</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/frente-assistidos" className="nav-link">Frente Assistidos</Link>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          : ""}
+      </body>
+    </>
   );
 }
