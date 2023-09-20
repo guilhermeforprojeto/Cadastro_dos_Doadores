@@ -3,7 +3,13 @@ import './assistenteForm.css'
 import { API } from '../../../assets/api/api';
 import Notify from '../../../components/react-toastify/react-toastify';
 import { Noti } from '../../../components/react-toastify/Noti';
-import BibleVerseWidget from '../../../components/BibleVerseWidget/BibleVerseWidget';
+import {
+  addItemToStorage,
+  readItemFromStorage,
+  deleteItemFromStorage,
+  clearItemFromStorage
+} from '../../../services/storage/storage';
+
 
 interface Sacola {
   id: string;
@@ -11,7 +17,7 @@ interface Sacola {
   assistidoId: string;
   doadorId: string;
   codigo: string;
-  conteudo: string;
+  nome: string;
 }
 
 const AssistenteForm: React.FC = () => {
@@ -24,24 +30,24 @@ const AssistenteForm: React.FC = () => {
     assistidoId: '',
     doadorId: '',
     codigo: '',
-    conteudo: '',
+    nome: '',
   });
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
 
-  const loadSacolas = async () => {
-    try {
-      const response = await API.get('/assistidos'); // Substitua pela sua rota de API
-      setSacolas(response.data.sacolas);
-      setNoti({ tipo: "info", msg: response.data.message })
-      // console.log(response)
-    } catch (error) {
-      console.error('Erro ao carregar sacolas:', error);
-    }
-  };
+  // const loadSacolas = async () => {
+  //   try {
+  //     const response = await API.get('/assistidos'); // Substitua pela sua rota de API
+  //     setSacolas(response.data.sacolas);
+  //     setNoti({ tipo: "info", msg: response.data.message })
+  //     // console.log(response)
+  //   } catch (error) {
+  //     console.error('Erro ao carregar sacolas:', error);
+  //   }
+  // };
 
-  useEffect(() => {
-    loadSacolas();
-  }, []);
+  // useEffect(() => {
+  //   loadSacolas();
+  // }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -49,209 +55,56 @@ const AssistenteForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await API.post('/assistidos', formData); // Substitua pela sua rota de API
-      loadSacolas();
-      setFormData({
-        id: '',
-        frenteAssistidaId: '',
-        assistidoId: '',
-        doadorId: '',
-        codigo: '',
-        conteudo: '',
-      });
-      setNoti({ tipo: "success", msg: response.data.message })
+    console.log(formData)
+    clearItemFromStorage()
+    addItemToStorage('NomeAssistente', formData.nome);
 
-      if (response.status === 201) {
-        setNoti({ tipo: "success", msg: response.data.message })
-        console.log('Sacola criada com sucesso!', response.data.message);
-      } else {
-        console.error('Erro ao criar sacola:', response.data.message);
-      }
-    }
-    catch (error) {
-      setNoti({ tipo: "error", msg: "Erro ao criar sacola" })
-      console.error('Erro ao criar sacola:', error);
-    }
-  };
+    // try {
+    //   const response = await API.post('/assistidos', formData); // Substitua pela sua rota de API
+    //   loadSacolas();
+    //   setFormData({
+    //     id: '',
+    //     frenteAssistidaId: '',
+    //     assistidoId: '',
+    //     doadorId: '',
+    //     codigo: '',
+    //     nome: '',
+    //   });
+    //   setNoti({ tipo: "success", msg: response.data.message })
 
-
-  const handleEditClick = (id: string) => {
-    setEditingItemId(id);
-    // Preencha os campos de edição com os dados atuais da sacola
-    const sacolaAtual = sacolas.find((sacola) => sacola.id === id);
-    if (sacolaAtual) {
-      setFormData({ ...formData, ...sacolaAtual });
-    }
-  };
-
-  const handleSaveEdit = async (id: string) => {
-    try {
-      const response = await API.put('/sacolas/' + id, formData); // Substitua pela sua rota de API
-      loadSacolas();
-      setFormData({
-        id: '',
-        frenteAssistidaId: '',
-        assistidoId: '',
-        doadorId: '',
-        codigo: '',
-        conteudo: '',
-      });
-      setNoti({ tipo: "success", msg: response.data.message })
-      // if (response.status === 201) {
-      //   setNoti({ tipo: "success", msg: response.data.message })
-      //   console.log('Sacola criada com sucesso!', response.data.message);
-      // } else {
-      //   console.error('Erro ao criar sacola:', response.data.message);
-      // }
-    }
-    catch (error) {
-      setNoti({ tipo: "error", msg: "Erro ao criar sacola" })
-      console.error('Erro ao criar sacola:', error);
-    }
-    // Implemente a lógica para salvar as alterações na sacola com o ID especificado
-    // Normalmente, você faria uma chamada à API para atualizar os dados no servidor
-    // Aqui, você pode apenas cancelar o modo de edição
-    setEditingItemId(null);
-  };
-
-  const handleDelete = async (sacola: Sacola) => {
-    try {
-      await API.delete(`/sacolas/${sacola.id}`); // Substitua pela sua rota de API
-      setNoti({ tipo: "success", msg: "Sacola " + sacola.codigo + " deletada com suceso" })
-      loadSacolas();
-    } catch (error) {
-      setNoti({ tipo: "error", msg: "Não foi possivel apagar " })
-      console.error('Erro ao excluir sacola:', error);
-    }
+    //   if (response.status === 201) {
+    //     setNoti({ tipo: "success", msg: response.data.message })
+    //     console.log('Sacola criada com sucesso!', response.data.message);
+    //   } else {
+    //     console.error('Erro ao criar sacola:', response.data.message);
+    //   }
+    // }
+    // catch (error) {
+    //   setNoti({ tipo: "error", msg: "Erro ao criar sacola" })
+    //   console.error('Erro ao criar sacola:', error);
+    // }
   };
 
   return (
-    <div className='container'>
+    <>
       <Notify notificacao={noti} />
-      <form className='container-form' onSubmit={handleSubmit}>
-        <h1>Cadastro de Assistente</h1>
-        {/* <div>
-          <label>Código</label>
-          <input
-            type="text"
-            name="codigo"
-            value={formData.codigo}
-            onChange={handleChange}
-            required
-          />
-        </div> */}
-        <div>
-          <label>Qual seu nome?</label>
-          <input
-            type="text"
-            name="conteudo"
-            value={formData.conteudo}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        {/* <div>
-          <label>Assistido</label>
-          <input
-            type="text"
-            name="assistidoId"
-            value={formData.assistidoId}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>DOADOR</label>
-          <input
-            type="text"
-            name="doadorId"
-            value={formData.doadorId}
-            onChange={handleChange}
-            required
-          />
-        </div> */}
-        <button type="submit">Cadastar Assisnte</button>
-      </form>
-      {/* <br></br>
-      <hr /> */}
-      {/* LISTA 
-      LISTA 
-      LISTA  */}
-      {/* <h2>Sacolas</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Código</th>
-            <th>Conteúdo</th>
-            <th>Assistido</th>
-            <th>DOADOR</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sacolas.map((sacola) => (
-            <tr key={sacola.id}>
-              <td>
-                {editingItemId === sacola.id ? (
-                  <input
-                    type="text"
-                    name="codigo"
-                    value={formData.codigo}
-                    onChange={handleChange}
-                  />
-                ) : (
-                  sacola.codigo
-                )}
-              </td>
-              <td>
-                {editingItemId === sacola.id ? (
-                  <input
-                    type="text"
-                    name="conteudo"
-                    value={formData.conteudo}
-                    onChange={handleChange}
-                  />
-                ) : (
-                  sacola.conteudo
-                )}
-              </td>
-              <td>
-                {editingItemId === sacola.id ? (
-                  <input
-                    type="text"
-                    name="assistidoId"
-                    value={formData.assistidoId}
-                    onChange={handleChange}
-                  />
-                ) : (
-                  sacola.assistidoId
-                )}
-              </td>
-              <td>
-                {editingItemId === sacola.id ? (
-                  <input
-                    type="text"
-                    name="doadorId"
-                    value={formData.doadorId}
-                    onChange={handleChange}
-                  />
-                ) : (
-                  sacola.doadorId
-                )}
-              </td>
-              <td>
-                {editingItemId === sacola.id ? (
-                  <button onClick={() => handleSaveEdit(sacola.id)}>Salvar</button>
-                ) : (
-                  <button onClick={() => handleEditClick(sacola.id)}>Editar</button>
-                )}
-                <button onClick={() => handleDelete(sacola)}>Excluir</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
-    </div>
+      <div className='context'>
+        <form className='container-form' onSubmit={handleSubmit}>
+          <h1>Cadastro do Assistente</h1>
+          <div>
+            <label>Qual seu nome?</label>
+            <input
+              type="text"
+              name="nome"
+              value={formData.nome}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button onClick={() => { setNoti({ tipo: "success", msg: "Assistente " + formData.nome + " cadastrado com sucesso!" }) }} type="submit">Cadastar Assisnte</button>
+        </form>
+      </div>
+    </>
   );
 };
 
