@@ -130,7 +130,7 @@ const AssistenteForm: React.FC = () => {
     <div className='container'>
       <Notify notificacao={noti} />
       <form className='container-form' onSubmit={handleSubmit}>
-        <h1>Cadastro de Assitente</h1>
+        <h1>Cadastro de Assistente</h1>
         {/* <div>
           <label>Código</label>
           <input
@@ -171,7 +171,7 @@ const AssistenteForm: React.FC = () => {
             required
           />
         </div> */}
-        <button type="submit">Criar Sacola</button>
+        <button type="submit">Cadastar Assisnte</button>
       </form>
       {/* <br></br>
       <hr /> */}

@@ -22,7 +22,7 @@
 
 @keyframes slideInUp {
   from {
-    transform: translateY(100%);
+    transform: translateY(10%);
   }
 
   to {
@@ -50,9 +50,9 @@
   animation: slideIn 0.2s ease-in-out;
 }
 
-.navClassContexto:hover {
+/* .navClassContexto:hover {
   animation: scaleUp 0.2s ease-in-out;
-}
+} */
 
 @keyframes slideIn {
   from {
@@ -164,30 +164,28 @@
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-@media(max-width: 799px) {
 
-  .headerclass {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+.headerclass {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
-  .logo h1 {
-    font-size: 16px;
-    padding: 10px 0 10px 0;
-  }
+.logo h1 {
+  font-size: 16px;
+  padding: 10px 0 10px 0;
+}
 
-  .nav-list {
-    display: flex;
-    flex-direction: column
-  }
-
+.nav-list {
+  display: flex;
+  flex-direction: column
+}
 
 
-  .headerclass nav ul li {
-    font-size: 12px;
-    display: flex;
-    flex-direction: column;
 
-  }
+.headerclass nav ul li {
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+
 }
