@@ -1,7 +1,6 @@
 export interface Doador {
-  id: string;
-  codigo: string;
+  // id: string;
   nome: string;
   contato: string;
-  sacolinhas: string;
+  sacolinhas: string[];
 }
