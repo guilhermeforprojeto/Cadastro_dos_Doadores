@@ -152,21 +152,21 @@ const SacolaForm: React.FC = () => {
           />
         </div>
         <div>
-          <label>Assistido</label>
+          <label>Frente Assistida</label>
           <input
             type="text"
             name="assistidoId"
-            value={formData.assistidoId}
+            value={formData.frenteAssistidaId}
             onChange={handleChange}
             required
           />
         </div>
         <div>
-          <label>DOADOR</label>
+          <label>Assistido</label>
           <input
             type="text"
-            name="doadorId"
-            value={formData.doadorId}
+            name="assistidoId"
+            value={formData.assistidoId}
             onChange={handleChange}
             required
           />
@@ -185,8 +185,9 @@ const SacolaForm: React.FC = () => {
           <tr>
             <th>Código</th>
             <th>Conteúdo</th>
+            <th>Frente Assistida</th>
             <th>Assistido</th>
-            <th>DOADOR</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -228,18 +229,7 @@ const SacolaForm: React.FC = () => {
                   sacola.assistidoId
                 )}
               </td>
-              <td>
-                {editingItemId === sacola.id ? (
-                  <input
-                    type="text"
-                    name="doadorId"
-                    value={formData.doadorId}
-                    onChange={handleChange}
-                  />
-                ) : (
-                  sacola.doadorId
-                )}
-              </td>
+
               <td>
                 {editingItemId === sacola.id ? (
                   <button onClick={() => handleSaveEdit(sacola.id)}>Salvar</button>
