@@ -24,13 +24,24 @@ const SacolaForm: React.FC = () => {
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
 
   const [frenteAss, setFrenteAss] = useState<tFrenteAssistidos[]>([])
+  const [dataassistidos, setDataassitidos] = useState<any[]>([])
 
   const loadFrenteAssistida = async () => {
     try {
-      const response = await API.get('/frente-assistida'); // Substitua pela sua rota de API
+      const response = await API.get('/frente-assistida/'); // Substitua pela sua rota de API
       setFrenteAss(response.data.frenteAssistida);
-      console.log(frenteAss)
-      console.log(response)
+      setNoti({ tipo: "info", msg: response.data.message })
+      // console.log(response)
+    } catch (error) {
+      console.error('Erro ao carregar sacolas:', error);
+    }
+  };
+  const loadAssistidos = async (id: string) => {
+    try {
+      const response = await API.get('/frente-assistida/' + id); // Substitua pela sua rota de API
+      setDataassitidos(response.data.frenteAssistida.assistidos
+      );
+      console.log(dataassistidos)
       setNoti({ tipo: "info", msg: response.data.message })
       // console.log(response)
     } catch (error) {
@@ -56,7 +67,16 @@ const SacolaForm: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  const handleFrenteAssistida = (event: any) => {
+    const selectedIndex = event.target.selectedIndex;
+    const selectedOption = event.target.options[selectedIndex];
+    const selectedId = selectedOption.getAttribute("data-id");
+    // setFrenteAssSelected(selectedId)
+    // console.log(event.target.value)
+    console.log(selectedId)
+    selectedOption.getAttribute("data-id");
+    loadAssistidos(selectedId)
+  }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -158,42 +178,25 @@ const SacolaForm: React.FC = () => {
 
         <div>
           <label>Frente Assistida ( PESQUISA(sonho) \ LISTAR CADASTRADAS)</label>
-          {/* <input
-            type="text"
-            name="assistido"
-            value={formData.assistido}
-            onChange={handleChange}
-            required
-          /> */}
-          <select            >
+          <select onChangeCapture={handleFrenteAssistida}>
             <option value="">Selecione uma Frente Assistida</option>
             {frenteAss.map((opcao) => (
-              <option key={opcao.nome} value={opcao.nome}>
+              <option key={opcao.id} data-id={opcao.id} value={opcao.nome}>
                 {opcao.nome}
               </option>
             ))}
-
           </select>
         </div>
-        {/* <div>
-          <label>Frente Assistida ( PESQUISA(sonho) \ LISTAR CADASTRADAS)</label>
-          <input
-            type="text"
-            name="assistido"
-            value={formData.assistido}
-            onChange={handleChange}
-            required
-          />
-        </div> */}
         <div>
           <label>Nome Assistido</label>
-          <input
-            type="text"
-            name="assistido"
-            value={formData.assistido}
-            onChange={handleChange}
-            required
-          />
+          <select>
+            <option value=''>Selecione uma frente primeiro</option>
+            {dataassistidos.map((assistido: any) => (
+              <option key={assistido.id} value={assistido}>
+                {assistido}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label>Observações</label>
