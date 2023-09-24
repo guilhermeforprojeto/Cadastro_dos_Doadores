@@ -76,6 +76,7 @@ const SacolaForm: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleFrenteAssistida = (event: any) => {
+    setFrenteAssistidaSelecionada(event.target.value);
     setFormData({ ...formData, [event.target.name]: event.target.value });
     const selectedIndex = event.target.selectedIndex;
     const selectedOption = event.target.options[selectedIndex];
@@ -91,21 +92,27 @@ const SacolaForm: React.FC = () => {
 
   }
   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // Lógica para criar a sacola aqui
 
+    // Após criar a sacola, redefina o valor selecionado para a primeira opção
+    setFrenteAssistidaSelecionada('');
+    setDataassitidos([])
     e.preventDefault();
     try {
       const response = await API.post('/sacolas', formData); // Substitua pela sua rota de API
       setNoti({ tipo: "success", msg: response.data.message })
       console.warn(formData)
       loadSacolas();
+
       setFormData({
         id: '',
         codigo: '',
-        status: '',
-        assistentesocial: '',
+        status: 'Registrada',
+        assistentesocial: cNomeAssistente[0],
         nomefrenteassistida: '',
         assistido: '',
-        doador: '',
+        doador: '(ñ relacionado)',
         obs: ''
       });
 
@@ -127,7 +134,27 @@ const SacolaForm: React.FC = () => {
       // console.log(error);
       // console.log(deuruim.response.data.message);
     }
+
   };
+
+  const [frenteAssistidaSelecionada, setFrenteAssistidaSelecionada] = useState('');
+
+  const frenteAssistida = [
+    // Seus dados da frente assistida aqui
+  ];
+
+  // const handleFrenteAssistida = (event) => {
+  //   setFrenteAssistidaSelecionada(event.target.value);
+  // };
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   // Lógica para criar a sacola aqui
+
+  //   // Após criar a sacola, redefina o valor selecionado para a primeira opção
+  //   setFrenteAssistidaSelecionada('');
+  // };
+
 
 
   const handleEditClick = (id: string) => {
@@ -208,7 +235,7 @@ const SacolaForm: React.FC = () => {
 
         <div>
           <label>Frente Assistida ( PESQUISA(sonho) \ LISTAR CADASTRADAS)</label>
-          <select name="nomefrenteassistida" onChangeCapture={handleFrenteAssistida}>
+          <select value={frenteAssistidaSelecionada} name="nomefrenteassistida" onChangeCapture={handleFrenteAssistida}>
 
             <option> Seleciona uma frente assistida</option>
             {frenteAss.map((opcao) => (
