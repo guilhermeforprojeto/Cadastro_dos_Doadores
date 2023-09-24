@@ -1,45 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import './scacolaForm.css'
+import { tSacola } from './sacola';
 import { ToastContainer, toast } from 'react-toastify';
 import { API } from '../../../assets/api/api';
 import Notify from '../../../components/react-toastify/react-toastify';
 import { Noti } from '../../../components/react-toastify/Noti';
-
-interface Sacola {
-  id: string;
-  frenteAssistidaId: string;
-  assistidoId: string;
-  doadorId: string;
-  codigo: string;
-  conteudo: string;
-}
+import { tFrenteAssistidos } from '../frente-assistidos/frenteassistidos';
 
 const SacolaForm: React.FC = () => {
-  const [sacolas, setSacolas] = useState<Sacola[]>([]);
+  const [sacolas, setSacolas] = useState<tSacola[]>([]);
   const [noti, setNoti] = useState<Noti>({ tipo: '', msg: '' });
 
-  const [formData, setFormData] = useState<Sacola>({
+  const [formData, setFormData] = useState<tSacola>({
     id: '',
-    frenteAssistidaId: '',
-    assistidoId: '',
-    doadorId: '',
     codigo: '',
-    conteudo: '',
+    status: '',
+    assistentesocial: '',
+    nomefrenteassistida: '',
+    assistido: '',
+    doador: '',
+    obs: ''
   });
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
 
+  const [frenteAss, setFrenteAss] = useState<tFrenteAssistidos[]>([])
+
+  const loadFrenteAssistida = async () => {
+    try {
+      const response = await API.get('/frente-assistida'); // Substitua pela sua rota de API
+      setFrenteAss(response.data.frenteAssistida);
+      console.log(frenteAss)
+      console.log(response)
+      setNoti({ tipo: "info", msg: response.data.message })
+      // console.log(response)
+    } catch (error) {
+      console.error('Erro ao carregar sacolas:', error);
+    }
+  };
   const loadSacolas = async () => {
     try {
       const response = await API.get('/sacolas'); // Substitua pela sua rota de API
       setSacolas(response.data.sacolas);
       setNoti({ tipo: "info", msg: response.data.message })
-      console.log(response)
+      // console.log(response)
     } catch (error) {
       console.error('Erro ao carregar sacolas:', error);
     }
   };
 
   useEffect(() => {
+    loadFrenteAssistida();
     loadSacolas();
   }, []);
 
@@ -54,11 +64,13 @@ const SacolaForm: React.FC = () => {
       loadSacolas();
       setFormData({
         id: '',
-        frenteAssistidaId: '',
-        assistidoId: '',
-        doadorId: '',
         codigo: '',
-        conteudo: '',
+        status: '',
+        assistentesocial: '',
+        nomefrenteassistida: '',
+        assistido: '',
+        doador: '',
+        obs: ''
       });
       setNoti({ tipo: "success", msg: response.data.message })
 
@@ -92,11 +104,12 @@ const SacolaForm: React.FC = () => {
       setFormData({
         id: '',
         codigo: '',
-        assistidoId: '',
-        frenteAssistidaId: '',
-        doadorId: '',
-
-        conteudo: '',
+        status: '',
+        assistentesocial: '',
+        nomefrenteassistida: '',
+        assistido: '',
+        doador: '',
+        obs: ''
       });
       setNoti({ tipo: "success", msg: response.data.message })
       // if (response.status === 201) {
@@ -116,7 +129,7 @@ const SacolaForm: React.FC = () => {
     setEditingItemId(null);
   };
 
-  const handleDelete = async (sacola: Sacola) => {
+  const handleDelete = async (sacola: tSacola) => {
     try {
       await API.delete(`/sacolas/${sacola.id}`); // Substitua pela sua rota de API
       setNoti({ tipo: "success", msg: "Sacola " + sacola.codigo + " deletada com suceso" })
@@ -142,42 +155,42 @@ const SacolaForm: React.FC = () => {
             required
           />
         </div>
+
         <div>
-          <label>Conteúdo</label>
+          <label>Frente Assistida ( PESQUISA(sonho) \ LISTAR CADASTRADAS)</label>
+          {/* <input
+            type="text"
+            name="assistido"
+            value={formData.assistido}
+            onChange={handleChange}
+            required
+          /> */}
+          <select            >
+            <option value="">Selecione uma Frente Assistida</option>
+            {frenteAss.map((opcao) => (
+              <option key={opcao.nome} value={opcao.nome}>
+                {opcao.nome}
+              </option>
+            ))}
+
+          </select>
+        </div>
+        {/* <div>
+          <label>Frente Assistida ( PESQUISA(sonho) \ LISTAR CADASTRADAS)</label>
           <input
             type="text"
-            name="conteudo"
-            value={formData.conteudo}
+            name="assistido"
+            value={formData.assistido}
             onChange={handleChange}
             required
           />
-        </div>
+        </div> */}
         <div>
           <label>Nome Assistido</label>
           <input
             type="text"
-            name="conteudo"
-            value={formData.conteudo}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Frente Assistida ( PESQUISA(sonho) \ LISTAR CADASTRADAS)</label>
-          <input
-            type="text"
-            name="assistidoId"
-            value={formData.frenteAssistidaId}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Assistido</label>
-          <input
-            type="text"
-            name="assistidoId"
-            value={formData.assistidoId}
+            name="assistido"
+            value={formData.assistido}
             onChange={handleChange}
             required
           />
@@ -186,8 +199,8 @@ const SacolaForm: React.FC = () => {
           <label>Observações</label>
           <input
             type="text"
-            name="assistidoId"
-            value={formData.assistidoId}
+            name="assistido"
+            value={formData.assistido}
             onChange={handleChange}
             required
           />
@@ -201,14 +214,13 @@ const SacolaForm: React.FC = () => {
       {/* LISTA 
       LISTA 
       LISTA  */}
-      <h2>Sacolas</h2>
+      <h2>Lista  Sacolas</h2>
       <table>
         <thead>
           <tr>
             <th>Status</th>
             <th>Código</th>
-            <th>Conteúdo</th>
-            <th>Frente Assistida</th>
+            <th>Frente Assistida( editar precisa de lista)</th>
             <th>Assistido</th>
             <th>Doador</th>
             <th>Assistente</th>
@@ -222,12 +234,12 @@ const SacolaForm: React.FC = () => {
                 {editingItemId === sacola.id ? (
                   <input
                     type="text"
-                    name="codigo"
-                    value={formData.codigo}
+                    name="status"
+                    value={formData.status}
                     onChange={handleChange}
                   />
                 ) : (
-                  sacola.codigo
+                  sacola.status
                 )}
               </td>
               <td>
@@ -246,24 +258,48 @@ const SacolaForm: React.FC = () => {
                 {editingItemId === sacola.id ? (
                   <input
                     type="text"
-                    name="conteudo"
-                    value={formData.conteudo}
+                    name="nomefrenteassistida"
+                    value={formData.nomefrenteassistida}
                     onChange={handleChange}
                   />
                 ) : (
-                  sacola.conteudo
+                  sacola.nomefrenteassistida
                 )}
               </td>
               <td>
                 {editingItemId === sacola.id ? (
                   <input
                     type="text"
-                    name="assistidoId"
-                    value={formData.assistidoId}
+                    name="assistido"
+                    value={formData.assistido}
                     onChange={handleChange}
                   />
                 ) : (
-                  sacola.assistidoId
+                  sacola.assistido
+                )}
+              </td>
+              <td>
+                {editingItemId === sacola.id ? (
+                  <input
+                    type="text"
+                    name="doador"
+                    value={formData.doador}
+                    onChange={handleChange}
+                  />
+                ) : (
+                  sacola.doador
+                )}
+              </td>
+              <td>
+                {editingItemId === sacola.id ? (
+                  <input
+                    type="text"
+                    name="assistentesocial"
+                    value={formData.assistentesocial}
+                    onChange={handleChange}
+                  />
+                ) : (
+                  sacola.assistentesocial
                 )}
               </td>
 

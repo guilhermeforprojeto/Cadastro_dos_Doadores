@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './frenteAssistidosForm.css'
-import { FrenteAssistidos } from './frenteassistidos';
+import { tFrenteAssistidos } from './frenteassistidos';
 import { API } from '../../../assets/api/api';
 import { Noti } from '../../../components/react-toastify/Noti';
 import Notify from '../../../components/react-toastify/react-toastify';
@@ -11,7 +11,7 @@ import {
   clearItemFromStorage
 } from '../../../services/storage/storage';
 const FrenteAssistidosForm: React.FC = () => {
-  const [sacolas, setSacolas] = useState<FrenteAssistidos[]>([]);
+  const [sacolas, setSacolas] = useState<tFrenteAssistidos[]>([]);
   const [noti, setNoti] = useState<Noti>({ tipo: '', msg: '' });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,11 +25,8 @@ const FrenteAssistidosForm: React.FC = () => {
     { value: 5, label: "5 Sacolinhas" },
   ]);
 
-  const [formData, setFormData] = useState<FrenteAssistidos>({
-    id: '',
-    codigo: '',
+  const [formData, setFormData] = useState<any>({
     nome: '',
-    sacolinhas: '',
   });
   const [dataHoraAtual, setDataHoraAtual] = useState(new Date());
 
@@ -79,16 +76,6 @@ const FrenteAssistidosForm: React.FC = () => {
       <h1>Cadastro Frente Assistida</h1>
       <form className='container-form' onSubmit={handleSubmit}>
         <div>
-          <label>Código</label>
-          <input
-            type="text"
-            name="codigo"
-            value={formData.codigo}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
           <label>Nome</label>
           <input
             type="text"
@@ -102,9 +89,9 @@ const FrenteAssistidosForm: React.FC = () => {
           <label>Sacolinhas</label>
           <select
             name="sacolinhas"
-            value={formData.sacolinhas[0]}
+            value={formData.assistidos[0]}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              setFormData({ ...formData, sacolinhas: e.target.value });
+              setFormData({ ...formData, assistidos: e.target.value });
             }}
             required
           >

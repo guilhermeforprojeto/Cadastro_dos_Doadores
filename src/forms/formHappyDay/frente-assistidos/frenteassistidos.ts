@@ -1,6 +1,6 @@
-export interface FrenteAssistidos {
-  id: string
+export interface tFrenteAssistidos {
+  id?: string
   codigo: string
   nome: string
-  sacolinhas: string
+  assistidos: string
 }
