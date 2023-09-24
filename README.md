@@ -2,6 +2,39 @@
 
 Cadastro dos Doadores - Sacolinhas Happy Day 2022
 
+IDEAL *SONHO*
+
+
+# DOAÇÃO SACOLINHA
+- Dados que devem estar previamente presentes no banco de dados 
+
+- - Sacolinhas | Nome Frente Assistida | Nome Assitido | Nome da Celula(n requerido)
+
+
+
+
+Sacolinhas com QR CODE/ Código de Barras.
+
+Formulário WEB  com leitura de QR CODE/ Código de Barras, que buscasse os dados cadastrados da sacolinhas previamente cadastrados.
+
+Formulário WEB com campos (nome, celular, célula, líderes e etc.) para doação de mais de uma sacolinha.
+
+Consulta para acompanhamento da sacolinhas doadas, com os dados dos doadores e a respectiva sacolinha
+Exportar um relatório para acompanhamento, uma  planilha Excel atenderia.
+
+ 
+
+	• RECEBIMENTO SACOLINHA
+
+		-- Formulário WEB, onde o recebedor da sacolinha faria a leitura do QR CODE/ Código de Barras.
+
+		-- Daria baixa na (s) sacolinha (s) entregue.
+
+		-- Consulta para acompanhamento da quantidade de sacolinhas devolvidas. 
+
+Exportar um relatório para acompanhamento, uma  planilha Excel atenderia.
+
+
 regras de negocio
 
 NOME DO ASSISTENTE SOCIAL
@@ -16,24 +49,19 @@ Frete Assistida
 - nome
 - Sacolinhas
 
-Sacola
+SACOLINHA
 
 - id
+- ID Assistido (backend)
 - codigo Sacolinha
-- codigo Assistido
+- conteudo Sacolinha
+- Nome Assistido
 - codigo Frente Assistida
-- codigo Doador
+- codigo Doador (backend)
+- Assistente respondesavel (backend)
+- status (sistema vai preencher - livre) (backend)
 
-Assistido
-
-- id
-- codigo
-- nome
-- cpf
-- codigo Sacolinha
-- codigo Frete Assistida
-
-DOADOR
+DOADOR = DOAÇÃO
 
 - id
 - nome
@@ -48,6 +76,10 @@ CÉLULA QUE FREQUENTA
 OBSERVAÇÕES
 
 - id
+___
+
+Tabela doação 
+ - que junta todas informações 
 
 # Getting Started with Create React App
 

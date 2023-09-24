@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './header.css';
+import AssisSociLogopng from '../../assets/img/AssisSociLogopng.png'
 
 
 
@@ -16,8 +17,13 @@ export default function Header() {
     <>
       <header className="headerclass">
         <div className="logo">
-          <h1><Link to="/" className="nav-link">Sacolinhas Happy Day 2023</Link></h1>
+          <img src={AssisSociLogopng} alt="Logo" />
+          <div>
+            <h1><Link to="/" className="nav-link"> Assistência Social</Link></h1>
+            <h5><Link to="/" className="nav-link">Sacolinhas Happy Day 2023</Link></h5>
+          </div>
         </div>
+
         <div id="headerMenu">
           <button id="hamburger-menu" onClick={toggleMenu}>
             <i className="fas fa-bars"></i>
@@ -40,9 +46,6 @@ export default function Header() {
                 </li>
                 <li className="nav-item">
                   <Link to="/assistente" className="nav-link">Assistente</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/assistidos" className="nav-link">Assistidos</Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/celula" className="nav-link">Celula</Link>

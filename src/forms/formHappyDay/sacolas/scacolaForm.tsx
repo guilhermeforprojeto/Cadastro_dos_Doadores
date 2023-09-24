@@ -33,7 +33,7 @@ const SacolaForm: React.FC = () => {
       const response = await API.get('/sacolas'); // Substitua pela sua rota de API
       setSacolas(response.data.sacolas);
       setNoti({ tipo: "info", msg: response.data.message })
-      // console.log(response)
+      console.log(response)
     } catch (error) {
       console.error('Erro ao carregar sacolas:', error);
     }
@@ -91,10 +91,11 @@ const SacolaForm: React.FC = () => {
       loadSacolas();
       setFormData({
         id: '',
-        frenteAssistidaId: '',
-        assistidoId: '',
-        doadorId: '',
         codigo: '',
+        assistidoId: '',
+        frenteAssistidaId: '',
+        doadorId: '',
+
         conteudo: '',
       });
       setNoti({ tipo: "success", msg: response.data.message })
@@ -152,7 +153,17 @@ const SacolaForm: React.FC = () => {
           />
         </div>
         <div>
-          <label>Frente Assistida</label>
+          <label>Nome Assistido</label>
+          <input
+            type="text"
+            name="conteudo"
+            value={formData.conteudo}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Frente Assistida ( PESQUISA(sonho) \ LISTAR CADASTRADAS)</label>
           <input
             type="text"
             name="assistidoId"
@@ -171,6 +182,17 @@ const SacolaForm: React.FC = () => {
             required
           />
         </div>
+        <div>
+          <label>Observações</label>
+          <input
+            type="text"
+            name="assistidoId"
+            value={formData.assistidoId}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
         <button type="submit">Criar Sacola</button>
       </form>
 
@@ -183,16 +205,31 @@ const SacolaForm: React.FC = () => {
       <table>
         <thead>
           <tr>
+            <th>Status</th>
             <th>Código</th>
             <th>Conteúdo</th>
             <th>Frente Assistida</th>
             <th>Assistido</th>
+            <th>Doador</th>
+            <th>Assistente</th>
             <th>Ações</th>
           </tr>
         </thead>
         <tbody>
           {sacolas.map((sacola) => (
             <tr key={sacola.id}>
+              <td>
+                {editingItemId === sacola.id ? (
+                  <input
+                    type="text"
+                    name="codigo"
+                    value={formData.codigo}
+                    onChange={handleChange}
+                  />
+                ) : (
+                  sacola.codigo
+                )}
+              </td>
               <td>
                 {editingItemId === sacola.id ? (
                   <input

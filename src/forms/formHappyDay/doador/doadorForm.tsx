@@ -56,6 +56,10 @@ const DoadorForm: React.FC = () => {
     console.log(formData)
 
   }
+
+
+
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormData({
@@ -206,6 +210,7 @@ const DoadorForm: React.FC = () => {
             </ul>
           </div>
         </div>
+        <button >Limpar</button>
         <button onClick={SaveForm}>Salvar</button>
       </form>
     </div>
