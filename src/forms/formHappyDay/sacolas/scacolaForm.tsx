@@ -173,7 +173,6 @@ const SacolaForm: React.FC = () => {
       setFrenteAss([
         {
           id: '',
-          codigo: '',
           nome: '',
           assistidos: ['']
         }
