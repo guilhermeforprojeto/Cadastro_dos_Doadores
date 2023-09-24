@@ -41,7 +41,7 @@ const SacolaForm: React.FC = () => {
       const response = await API.get('/frente-assistida/' + id); // Substitua pela sua rota de API
       setDataassitidos(response.data.frenteAssistida.assistidos
       );
-      console.log(dataassistidos)
+      // console.log(dataassistidos)
       setNoti({ tipo: "info", msg: response.data.message })
       // console.log(response)
     } catch (error) {
@@ -68,16 +68,25 @@ const SacolaForm: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleFrenteAssistida = (event: any) => {
+
+    setFormData({ ...formData, [event.target.name]: event.target.value });
     const selectedIndex = event.target.selectedIndex;
     const selectedOption = event.target.options[selectedIndex];
     const selectedId = selectedOption.getAttribute("data-id");
     // setFrenteAssSelected(selectedId)
-    // console.log(event.target.value)
-    console.log(selectedId)
+    console.log(event.target.value)
+    // console.log(selectedId)
     selectedOption.getAttribute("data-id");
     loadAssistidos(selectedId)
   }
+  const handleAssistido = (event: any) => {
+
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+    console.log(event.target.value)
+
+  }
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log(formData)
     e.preventDefault();
     try {
       const response = await API.post('/sacolas', formData); // Substitua pela sua rota de API
@@ -178,7 +187,7 @@ const SacolaForm: React.FC = () => {
 
         <div>
           <label>Frente Assistida ( PESQUISA(sonho) \ LISTAR CADASTRADAS)</label>
-          <select onChangeCapture={handleFrenteAssistida}>
+          <select name="nomefrenteassistida" onChangeCapture={handleFrenteAssistida}>
             <option value="">Selecione uma Frente Assistida</option>
             {frenteAss.map((opcao) => (
               <option key={opcao.id} data-id={opcao.id} value={opcao.nome}>
@@ -189,7 +198,7 @@ const SacolaForm: React.FC = () => {
         </div>
         <div>
           <label>Nome Assistido</label>
-          <select>
+          <select name="assistido" onChange={handleAssistido} >
             <option value=''>Selecione uma frente primeiro</option>
             {dataassistidos.map((assistido: any) => (
               <option key={assistido.id} value={assistido}>
@@ -202,8 +211,8 @@ const SacolaForm: React.FC = () => {
           <label>Observações</label>
           <input
             type="text"
-            name="assistido"
-            value={formData.assistido}
+            name="obs"
+            value={formData.obs}
             onChange={handleChange}
             required
           />
