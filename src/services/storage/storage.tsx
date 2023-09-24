@@ -14,14 +14,14 @@ export function addItemToStorage(itemKey: string, itemValue: any) {
 }
 
 // Função para ler um item do LocalStorage
-export function readItemFromStorage<T>(itemKey: string): T | null {
+export function readItemFromStorage<T>(itemKey: string) {
   const data = localStorage.getItem(itemKey);
 
   if (data) {
     return JSON.parse(data);
   }
 
-  return null;
+  return "Assistente não encontrado";
 }
 
 // Função para excluir um item do LocalStorage

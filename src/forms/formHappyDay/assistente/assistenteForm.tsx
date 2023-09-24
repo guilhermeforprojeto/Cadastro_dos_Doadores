@@ -59,7 +59,8 @@ const AssistenteForm: React.FC = () => {
     e.preventDefault();
     console.log(formData)
     clearItemFromStorage()
-    addItemToStorage('NomeAssistente', formData.nome);
+    const vNomeAssistente: string = formData.nome
+    addItemToStorage('NomeAssistente', vNomeAssistente);
 
     window.location.href = '/doador';
 

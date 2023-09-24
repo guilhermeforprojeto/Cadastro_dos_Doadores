@@ -6,11 +6,14 @@ import { API } from '../../../assets/api/api';
 import Notify from '../../../components/react-toastify/react-toastify';
 import { Noti } from '../../../components/react-toastify/Noti';
 import { tFrenteAssistidos } from '../frente-assistidos/frenteassistidos';
+import { readItemFromStorage } from '../../../services/storage/storage';
 
 const SacolaForm: React.FC = () => {
   const [sacolas, setSacolas] = useState<tSacola[]>([]);
   const [noti, setNoti] = useState<Noti>({ tipo: '', msg: '' });
+  const cNomeAssistente: string = readItemFromStorage('NomeAssistente')
 
+  const [frenteAss, setFrenteAss] = useState<tFrenteAssistidos[]>([])
   const [formData, setFormData] = useState<tSacola>({
     id: '',
     codigo: '',
@@ -23,7 +26,6 @@ const SacolaForm: React.FC = () => {
   });
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
 
-  const [frenteAss, setFrenteAss] = useState<tFrenteAssistidos[]>([])
   const [dataassistidos, setDataassitidos] = useState<any[]>([])
 
   const loadFrenteAssistida = async () => {
@@ -53,31 +55,34 @@ const SacolaForm: React.FC = () => {
       const response = await API.get('/sacolas'); // Substitua pela sua rota de API
       setSacolas(response.data.sacolas);
       setNoti({ tipo: "info", msg: response.data.message })
-      // console.log(response)
     } catch (error) {
       console.error('Erro ao carregar sacolas:', error);
     }
+
+    // setFormData({ ...formData, status: 'Registrada' });
+    // console.warn('status')
   };
 
   useEffect(() => {
     loadFrenteAssistida();
     loadSacolas();
+    setFormData({ ...formData, assistentesocial: cNomeAssistente[0], status: 'Registrada', doador: '(ñ relacionado)' });
+    console.log(formData)
+
+
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleFrenteAssistida = (event: any) => {
-
     setFormData({ ...formData, [event.target.name]: event.target.value });
     const selectedIndex = event.target.selectedIndex;
     const selectedOption = event.target.options[selectedIndex];
     const selectedId = selectedOption.getAttribute("data-id");
-    // setFrenteAssSelected(selectedId)
-    console.log(event.target.value)
-    // console.log(selectedId)
     selectedOption.getAttribute("data-id");
     loadAssistidos(selectedId)
+
   }
   const handleAssistido = (event: any) => {
 
@@ -86,10 +91,12 @@ const SacolaForm: React.FC = () => {
 
   }
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log(formData)
+
     e.preventDefault();
     try {
       const response = await API.post('/sacolas', formData); // Substitua pela sua rota de API
+      setNoti({ tipo: "success", msg: response.data.message })
+      console.warn(formData)
       loadSacolas();
       setFormData({
         id: '',
@@ -101,18 +108,24 @@ const SacolaForm: React.FC = () => {
         doador: '',
         obs: ''
       });
-      setNoti({ tipo: "success", msg: response.data.message })
 
       if (response.status === 201) {
         setNoti({ tipo: "success", msg: response.data.message })
         console.log('Sacola criada com sucesso!', response.data.message);
       } else {
         console.error('Erro ao criar sacola:', response.data.message);
+        console.warn(formData)
+
       }
     }
     catch (error) {
-      setNoti({ tipo: "error", msg: "Erro ao criar sacola" })
-      console.error('Erro ao criar sacola:', error);
+      const deuruim: any = error
+      setNoti({ tipo: "error", msg: `${deuruim.response.data.message}` })
+      console.warn(formData)
+
+      // console.error('Erro ao criar sacola:', error);
+      // console.log(error);
+      // console.log(deuruim.response.data.message);
     }
   };
 
@@ -130,6 +143,14 @@ const SacolaForm: React.FC = () => {
     try {
       const response = await API.put('/sacolas/' + id, formData); // Substitua pela sua rota de API
       loadSacolas();
+      setFrenteAss([
+        {
+          id: '',
+          codigo: '',
+          nome: '',
+          assistidos: ['']
+        }
+      ])
       setFormData({
         id: '',
         codigo: '',
@@ -188,17 +209,20 @@ const SacolaForm: React.FC = () => {
         <div>
           <label>Frente Assistida ( PESQUISA(sonho) \ LISTAR CADASTRADAS)</label>
           <select name="nomefrenteassistida" onChangeCapture={handleFrenteAssistida}>
-            <option value="">Selecione uma Frente Assistida</option>
+
+            <option> Seleciona uma frente assistida</option>
             {frenteAss.map((opcao) => (
               <option key={opcao.id} data-id={opcao.id} value={opcao.nome}>
                 {opcao.nome}
               </option>
             ))}
+
           </select>
         </div>
         <div>
           <label>Nome Assistido</label>
           <select name="assistido" onChange={handleAssistido} >
+
             <option value=''>Selecione uma frente primeiro</option>
             {dataassistidos.map((assistido: any) => (
               <option key={assistido.id} value={assistido}>
@@ -219,6 +243,7 @@ const SacolaForm: React.FC = () => {
         </div>
 
         <button type="submit">Criar Sacola</button>
+        <button >Limpar </button>
       </form>
 
       <br></br>
