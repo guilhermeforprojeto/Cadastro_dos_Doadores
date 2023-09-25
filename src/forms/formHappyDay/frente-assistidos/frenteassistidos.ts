@@ -1,5 +1,5 @@
 export interface tFrenteAssistidos {
-  id?: string
+  id: string
   nome: string
   assistidos: ['']
 }
