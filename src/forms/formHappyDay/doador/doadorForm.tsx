@@ -136,7 +136,7 @@ const DoadorForm: React.FC = () => {
           <div>
             <label>Contato</label>
             <input
-              type="text"
+              type="number"
               name="contato"
               value={handleformData.contato}
               onChange={handleChange}
