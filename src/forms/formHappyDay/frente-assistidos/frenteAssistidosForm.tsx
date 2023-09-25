@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import './frenteAssistidosForm.css'
+import './frenteAssistidosForm.css'
 import { API } from '../../../assets/api/api';
 import Notify from '../../../components/react-toastify/react-toastify';
 import { Noti } from '../../../components/react-toastify/Noti';
@@ -227,14 +227,14 @@ const FrenteAssistidosForm: React.FC = () => {
 
   return (<>
     <Notify notificacao={noti} />
-    <div className='container-header'>Assiste responsavel: {readItemFromStorage("NomeAssistente")} em {dataHoraAtual.toLocaleString('pt-BR', {
+    <div className='container-headerFrenteAss'>Assiste responsavel: {readItemFromStorage("NomeAssistente")} em {dataHoraAtual.toLocaleString('pt-BR', {
       timeZone: 'America/Sao_Paulo',
       dateStyle: 'long',
       timeStyle: 'medium'
     })} </div>
-    <div className='container'>
+    <div className='containerFrenteAss'>
       <h1>Cadastro de Frente Assistido</h1>
-      <form className='container-form' onSubmit={handleSubmit}>
+      <form className='containerFrenteAss-form' onSubmit={handleSubmit}>
 
         <div>
           <label>Nome</label>
@@ -277,7 +277,7 @@ const FrenteAssistidosForm: React.FC = () => {
               name="assistidos"
               value={handleformData.assistidos}
               onChange={handleChange}
-              required
+
             />
 
 
@@ -301,58 +301,66 @@ const FrenteAssistidosForm: React.FC = () => {
             </ul>
           </div>
         </div>
-        <button >Limpar</button>
-        <button onClick={SaveForm}>Salvar</button>
+        <hr></hr>
+        <label>Finalizar</label>
+        <div className='btncontainerFrenteAss'>
+          <button type='reset' >Limpar</button>
+          <button type='submit' onClick={SaveForm}>Salvar</button>
+        </div>
       </form>
     </div>
     {/* Lista */}
-    <table>
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Assistidos</th>
-        </tr>
-      </thead>
-      <tbody>
-        {frentesList.map((sacola) => (
-          <tr key={sacola.id}>
-            <td>
-              {editingItemId === sacola.id ? (
-
-                <input
-                  type="text"
-                  name="nome"
-                  value={formData.nome}
-                  onChange={handleChange}
-                />) : (
-                sacola.nome
-              )}
-            </td>
-            <td>
-              {editingItemId === sacola.id ? (
-                <input
-                  type="text"
-                  name="assistidos"
-                  value={formData.assistidos}
-                  onChange={handleChange}
-                />) : (
-                sacola.assistidos
-              )}
-            </td>
-
-            <td>
-              {editingItemId === sacola.id ? (
-                <button onClick={() => handleSaveEdit(sacola.id)}>Salvar</button>
-              ) : (
-                <button onClick={() => handleEditClick(sacola.id)}>Editar</button>
-              )}
-              <button onClick={() => handleDelete(sacola)}>Excluir</button>
-            </td>
+    <div className='tableContainerFrenteAss' >
+      <label>Listgem - Frentes Cadastradas</label>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Assistidos</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        {formData.id.length > 0 ?
+          frentesList.map((sacola) => (
+            <tbody>
+              <tr key={sacola.id}>
+                <td>
+                  {editingItemId === sacola.id ? (
 
+                    <input
+                      type="text"
+                      name="nome"
+                      value={formData.nome}
+                      onChange={handleChange}
+                    />) : (
+                    sacola.nome
+                  )}
+                </td>
+                <td>
+                  {editingItemId === sacola.id ? (
+                    <input
+                      type="text"
+                      name="assistidos"
+                      value={formData.assistidos}
+                      onChange={handleChange}
+                    />) : (
+                    sacola.assistidos
+                  )}
+                </td>
+
+                <td>
+                  {editingItemId === sacola.id ? (
+                    <button onClick={() => handleSaveEdit(sacola.id)}>Salvar</button>
+                  ) : (
+                    <button onClick={() => handleEditClick(sacola.id)}>Editar</button>
+                  )}
+                  <button onClick={() => handleDelete(sacola)}>Excluir</button>
+                </td>
+              </tr>
+            </tbody>
+          ))
+          : <span><h1>Não existe Frentes cadastradas</h1></span>}
+      </table>
+    </div>
 
   </>
   );

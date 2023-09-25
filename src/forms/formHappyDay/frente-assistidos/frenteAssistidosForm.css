@@ -1,0 +1,136 @@
+/* Estilos para a página de cadastro de frente assistido */
+.container-headerFrenteAss {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.containerFrenteAss {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.containerFrenteAss h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.containerFrenteAss-form label {
+  font-weight: bold;
+}
+
+.containerFrenteAss-form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.containerFrenteAss-form button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.btncontainerFrenteAss {
+  display: flex;
+  flex-direction: row;
+  align-content: space-around;
+  justify-content: space-evenly;
+
+}
+
+.containerFrenteAss-form button:last-child {
+  margin-right: 0;
+}
+
+.containerFrenteAss-form button:hover {
+  background-color: #0056b3;
+}
+
+.containerFrenteAss-form ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.containerFrenteAss-form ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Estilo para remover assistido */
+.containerFrenteAss-form ul li button {
+  background-color: #d9534f;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.containerFrenteAss-form ul li button:hover {
+  background-color: #c9302c;
+}
+
+/* Estilos para a tabela */
+.tableContainerFrenteAss {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tableContainerFrenteAss table tbody span {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.tableContainerFrenteAss table tbody span {
+  min-width: 200px;
+}
+
+.tableContainerFrenteAss table tbody span h1 {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+table {
+  width: fit-content;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th,
+table td {
+  color: #333;
+  border: 1px solid #9ea2af;
+  padding: 10px;
+  text-align: left;
+}
+
+table th {
+  background-color: #a2a2a2;
+  font-weight: bold;
+}
+
+table tr:nth-child(even) {
+  background-color: #b5b5b5;
+}
