@@ -1,0 +1,71 @@
+.contextAssistenteForm {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.container-formAssistenteForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  font-size: 16px;
+}
+
+button {
+  width: 70%;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0069d9;
+}
+
+.noti {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 999;
+}
+
+.noti.success {
+  background-color: #41c96a;
+}
+
+.noti.error {
+  background-color: #d9534f;
+}
+
+.noti .msg {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+}

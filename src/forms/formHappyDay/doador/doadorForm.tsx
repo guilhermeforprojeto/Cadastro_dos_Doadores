@@ -43,14 +43,14 @@ const DoadorForm: React.FC = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+
+
+
   const SaveForm = () => {
     setNoti({ tipo: 'success', msg: 'Sacolainha cadastrada!' })
     console.log(formData)
-
   }
-
-
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
