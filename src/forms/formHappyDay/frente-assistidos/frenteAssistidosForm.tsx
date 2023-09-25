@@ -33,9 +33,18 @@ const FrenteAssistidosForm: React.FC = () => {
 
   });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (e.target.name === "assistidos") {
+
+      setHandleFormData({
+        ...handleformData,
+        assistidosSelecionados: [...handleformData.assistidosSelecionados, handleformData.assistidos],
+        assistidos: '',
+      });
+    }
+    console.log(e.target.name)
+
     setHandleFormData({ ...handleformData, [e.target.name]: e.target.value });
   };
-
   const handleEditClick = (id: string) => {
     setEditingItemId(id);
     // Preencha os campos de edição com os dados atuais da sacola
@@ -103,13 +112,13 @@ const FrenteAssistidosForm: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
   const SaveForm = () => {
-
+    handleAdicionarSacolinha()
     // setNoti({ tipo: 'success', msg: 'Sacolainha cadastrada!' })
-    setFormData({
-      id: '',
-      nome: '',
-      assistidos: [...handleformData.assistidosSelecionados]
-    })
+    // setFormData({
+    //   id: '',
+    //   nome: '',
+    //   assistidos: [...handleformData.assistidosSelecionados]
+    // })
 
     // console.log(handleformData.assistidosSelecionados)
     console.warn(formData)
@@ -171,12 +180,20 @@ const FrenteAssistidosForm: React.FC = () => {
 
 
   const handleAdicionarSacolinha = () => {
+
+
     if (handleformData.assistidos && !handleformData.assistidosSelecionados.includes(handleformData.assistidos)) {
       setHandleFormData({
         ...handleformData,
         assistidosSelecionados: [...handleformData.assistidosSelecionados, handleformData.assistidos],
         assistidos: '',
       });
+      setFormData({
+        id: handleformData.id,
+        nome: handleformData.nome,
+        assistidos: [...handleformData.assistidosSelecionados, handleformData.assistidos]
+      })
+      console.log(handleformData.assistidos.length === 0)
       // setHandleFormData({
       //   id: '',
       //   // nome: '',
@@ -185,8 +202,11 @@ const FrenteAssistidosForm: React.FC = () => {
       //   assistidos: '',
       // })
     } else {
+      if (handleformData.assistidos.length > 0) {
+        setNoti({ tipo: 'warning', msg: 'Assistido já foi informado' })
+      }
       console.error("Assistido já foi informado!")
-      setNoti({ tipo: 'warning', msg: 'Assistido já foi informado' })
+
     }
     // setFormData({
     //   id: handleformData.id,
@@ -242,30 +262,7 @@ const FrenteAssistidosForm: React.FC = () => {
             required
           />
         </div>
-
         <div>
-          {/* <div>
-            <label>Sacolinhas Disponíveis:</label>
-            <select
-              name="sacolinhasDisponiveis"
-              value={handleformData.assistidos}
-              onChange={(e) => {
-                setHandleFormData({ ...handleformData, assistidos: e.target.value });
-              }}
-            >
-              <option value="">Selecione uma sacolinha</option>
-              <input
-                type="text"
-                name="contato"
-                value={handleformData.assistidos}
-                onChange={handleChange}
-                required
-              />
-              {options}
-            </select>
-            <button onClick={handleAdicionarSacolinha}>Adicionar Sacolinha</button>
-          </div> */}
-
           <div>
             <label>Informe 1 nome por vez e adcione</label>
             <input
@@ -273,21 +270,15 @@ const FrenteAssistidosForm: React.FC = () => {
               name="assistidos"
               value={handleformData.assistidos}
               onChange={handleChange}
-
             />
-
-
             <button onClick={handleAdicionarSacolinha}>Adicionar Assistido</button>
           </div>
-
-
-
           <div>
             <hr></hr>
             <label>Assistidos informados:</label>
             <ul>
               {handleformData.assistidosSelecionados.map((sacolinha: any | React.Key | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined) => (
-                <li onChangeCapture={handleAdicionarSacolinha} key={sacolinha.id}>
+                <li key={sacolinha.id}>
                   {sacolinha}
                   <button onClick={() => handleRemoverSacolinha(sacolinha)}>
                     Remover
