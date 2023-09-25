@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './frenteAssistidosForm.css'
+// import './frenteAssistidosForm.css'
 import { API } from '../../../assets/api/api';
 import Notify from '../../../components/react-toastify/react-toastify';
 import { Noti } from '../../../components/react-toastify/Noti';

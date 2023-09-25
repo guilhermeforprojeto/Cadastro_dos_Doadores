@@ -114,72 +114,73 @@ const DoadorForm: React.FC = () => {
   };
   return (<>
     <Notify notificacao={noti} />
-    <div className='container-header'>Assiste responsavel: {readItemFromStorage("NomeAssistente")} em {dataHoraAtual.toLocaleString('pt-BR', {
+    <div className='containerDoador-header'>Assiste responsavel: {readItemFromStorage("NomeAssistente")} em {dataHoraAtual.toLocaleString('pt-BR', {
       timeZone: 'America/Sao_Paulo',
       dateStyle: 'long',
       timeStyle: 'medium'
     })} </div>
-    <div className='container'>
-      <h1>Cadastro de Doador</h1>
-      <form className='container-form' onSubmit={handleSubmit}>
-
-        <div>
-          <label>Nome</label>
-          <input
-            type="text"
-            name="nome"
-            value={handleformData.nome}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Contato</label>
-          <input
-            type="text"
-            name="contato"
-            value={handleformData.contato}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
+    <div className='containerDoadorDoadorBodyPage'>
+      <div className='containerDoadorDoador'>
+        <h1>Cadastro de Doador</h1>
+        <form className='containerDoador-form' onSubmit={handleSubmit}>
           <div>
-            <label>Sacolinhas Disponíveis:</label>
-            <select
-              name="sacolinhasDisponiveis"
-              value={handleformData.sacolinhaAtual}
-              onChange={(e) => {
-                setHandleFormData({ ...handleformData, sacolinhaAtual: e.target.value });
-              }}
-            >
-              <option value="">Selecione uma sacolinha</option>
-              {sacolasOP.map((opcao: OpcaoSacolinha) => (
-                <option key={opcao.codigo} value={opcao.codigo}>
-                  {opcao.codigo}
-                </option>
-              ))}
-            </select>
-            <button onClick={handleAdicionarSacolinha}>Adicionar Sacolinha</button>
+            <label>Nome</label>
+            <input
+              type="text"
+              name="nome"
+              value={handleformData.nome}
+              onChange={handleChange}
+              required
+            />
           </div>
-
           <div>
-            <label>Sacolinhas Selecionadas:</label>
-            <ul>
-              {handleformData.sacolinhasSelecionadas.map((sacolinha: any | React.Key | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined) => (
-                <li key={sacolinha}>
-                  {sacolinha}
-                  <button onClick={() => handleRemoverSacolinha(sacolinha)}>
-                    Remover
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <label>Contato</label>
+            <input
+              type="text"
+              name="contato"
+              value={handleformData.contato}
+              onChange={handleChange}
+              required
+            />
           </div>
-        </div>
-        <button >Limpar</button>
-        <button onClick={SaveForm}>Salvar</button>
-      </form>
+          <div>
+            <div>
+              <label>Sacolinhas Disponíveis:</label>
+              <select
+                name="sacolinhasDisponiveis"
+                value={handleformData.sacolinhaAtual}
+                onChange={(e) => {
+                  setHandleFormData({ ...handleformData, sacolinhaAtual: e.target.value });
+                }}
+              >
+                <option value="">Selecione uma sacolinha</option>
+                {sacolasOP.map((opcao: OpcaoSacolinha) => (
+                  <option key={opcao.codigo} value={opcao.codigo}>
+                    {opcao.codigo}
+                  </option>
+                ))}
+              </select>
+              <button onClick={handleAdicionarSacolinha}>Adicionar Sacolinha</button>
+            </div>
+
+            <div>
+              <label>Sacolinhas Selecionadas:</label>
+              <ul>
+                {handleformData.sacolinhasSelecionadas.map((sacolinha: any | React.Key | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined) => (
+                  <li key={sacolinha}>
+                    {sacolinha}
+                    <button onClick={() => handleRemoverSacolinha(sacolinha)}>
+                      Remover
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <button >Limpar</button>
+          <button onClick={SaveForm}>Salvar</button>
+        </form>
+      </div>
     </div>
   </>
   );

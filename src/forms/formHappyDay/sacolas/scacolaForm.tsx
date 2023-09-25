@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './scacolaForm.css'
+// import './scacolaForm.css'
 import { tSacola } from './sacola';
 import { ToastContainer, toast } from 'react-toastify';
 import { API } from '../../../assets/api/api';
