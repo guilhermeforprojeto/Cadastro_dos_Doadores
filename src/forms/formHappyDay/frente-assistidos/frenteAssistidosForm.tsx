@@ -25,7 +25,13 @@ const FrenteAssistidosForm: React.FC = () => {
     assistidosSelecionados: [],
     assistidos: '',
   });
+  const [formData, setFormData] = useState<tFrenteAssistidos>({
 
+    id: handleformData.id,
+    nome: handleformData.nome,
+    assistidos: handleformData.assistidosSelecionados,
+
+  });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setHandleFormData({ ...handleformData, [e.target.name]: e.target.value });
   };
@@ -83,18 +89,13 @@ const FrenteAssistidosForm: React.FC = () => {
     }
   };
 
-  const [formData, setFormData] = useState<tFrenteAssistidos>({
 
-    id: handleformData.nome,
-    nome: handleformData.nome,
-    assistidos: handleformData.contato,
-
-  });
 
   const [dataHoraAtual, setDataHoraAtual] = useState(new Date());
 
   // Atualiza a data e hora a cada segundo
   useEffect(() => {
+    // setFormData(formData)
     const interval = setInterval(() => {
       setDataHoraAtual(new Date());
     }, 1000);
@@ -103,20 +104,17 @@ const FrenteAssistidosForm: React.FC = () => {
   }, []);
   const SaveForm = () => {
 
+    // setNoti({ tipo: 'success', msg: 'Sacolainha cadastrada!' })
     setFormData({
-      id: handleformData.id,
-      nome: handleformData.nome,
-      assistidos: handleformData.assistidosSelecionados,
-    });
-
-    setNoti({ tipo: 'success', msg: 'Sacolainha cadastrada!' })
-    console.log(formData)
-    setHandleFormData({
       id: '',
       nome: '',
-      assistidosSelecionados: [],
-      assistidos: '',
+      assistidos: [...handleformData.assistidosSelecionados]
     })
+
+    // console.log(handleformData.assistidosSelecionados)
+    console.warn(formData)
+    // console.warn(formData.assistidos)
+    console.log(handleformData.assistidosSelecionados)
 
   }
   const handleSubmit = async (e: React.FormEvent) => {
@@ -179,13 +177,6 @@ const FrenteAssistidosForm: React.FC = () => {
         assistidosSelecionados: [...handleformData.assistidosSelecionados, handleformData.assistidos],
         assistidos: '',
       });
-      setFormData({
-        id: handleformData.id,
-        nome: handleformData.nome,
-        assistidos: handleformData.assistidosSelecionados,
-      })
-      console.log(formData)
-      console.log(handleformData)
       // setHandleFormData({
       //   id: '',
       //   // nome: '',
@@ -197,6 +188,11 @@ const FrenteAssistidosForm: React.FC = () => {
       console.error("Assistido já foi informado!")
       setNoti({ tipo: 'warning', msg: 'Assistido já foi informado' })
     }
+    // setFormData({
+    //   id: handleformData.id,
+    //   nome: handleformData.nome,
+    //   assistidos: handleformData.assistidosSelecionados,
+    // })
     // setHandleFormData({
     //   ...handleformData,
     //   assistidosSelecionados: [...handleformData.assistidosSelecionados, handleformData.assistidos],
@@ -291,7 +287,7 @@ const FrenteAssistidosForm: React.FC = () => {
             <label>Assistidos informados:</label>
             <ul>
               {handleformData.assistidosSelecionados.map((sacolinha: any | React.Key | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined) => (
-                <li key={sacolinha.id}>
+                <li onChangeCapture={handleAdicionarSacolinha} key={sacolinha.id}>
                   {sacolinha}
                   <button onClick={() => handleRemoverSacolinha(sacolinha)}>
                     Remover
