@@ -18,14 +18,6 @@ const DoadorForm: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setHandleFormData({ ...handleformData, [e.target.name]: e.target.value });
   };
-  // const [opcoes, setOpcoes] = useState([
-  //   { value: 0, label: "" },
-  //   { value: 1, label: "1 Sacolinha" },
-  //   { value: 2, label: "2 Sacolinhas" },
-  //   { value: 3, label: "3 Sacolinhas" },
-  //   { value: 4, label: "4 Sacolinhas" },
-  //   { value: 5, label: "5 Sacolinhas" },
-  // ]);
   const [handleformData, setHandleFormData] = useState<any>({
     id: '',
     nome: '',
@@ -67,31 +59,6 @@ const DoadorForm: React.FC = () => {
       contato: handleformData.contato,
       sacolinhas: handleformData.sacolinhasSelecionadas,
     })
-    // console.log(handleformData)
-    // console.log(e)
-    // try {
-    //   const response = await API.post('/sacolas', formData); // Substitua pela sua rota de API
-    //   // loadSacolas();
-    //   setFormData({
-    //     id: '',
-    //     codigo: '',
-    //     nome: '',
-    //     contato: '',
-    //     sacolinhas: '',
-    //   });
-    //   setNoti({ tipo: "success", msg: response.data.message })
-
-    //   if (response.status === 201) {
-    //     setNoti({ tipo: "success", msg: response.data.message })
-    //     console.log('Sacola criada com sucesso!', response.data.message);
-    //   } else {
-    //     console.error('Erro ao criar sacola:', response.data.message);
-    //   }
-    // }
-    // catch (error) {
-    //   setNoti({ tipo: "error", msg: "Erro ao criar sacola" })
-    //   console.error('Erro ao criar sacola:', error);
-    // }
   };
 
   useEffect(() => {

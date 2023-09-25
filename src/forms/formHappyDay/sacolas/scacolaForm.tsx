@@ -235,7 +235,6 @@ const SacolaForm: React.FC = () => {
         <div>
           <label>Frente Assistida ( PESQUISA(sonho) \ LISTAR CADASTRADAS)</label>
           <select value={frenteAssistidaSelecionada} name="nomefrenteassistida" onChangeCapture={handleFrenteAssistida}>
-
             <option> Seleciona uma frente assistida</option>
             {frenteAss.map((opcao) => (
               <option key={opcao.id} data-id={opcao.id} value={opcao.nome}>
@@ -246,9 +245,8 @@ const SacolaForm: React.FC = () => {
           </select>
         </div>
         <div>
-          <label>Nome Assistido</label>
+          <label>Nome Assistido(arrumar o editar)</label>
           <select name="assistido" onChange={handleAssistido} >
-
             <option value=''>Selecione uma frente primeiro</option>
             {dataassistidos.map((assistido: any) => (
               <option key={assistido.id} value={assistido}>
