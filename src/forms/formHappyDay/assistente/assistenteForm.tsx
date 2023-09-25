@@ -47,10 +47,10 @@ const AssistenteForm: React.FC = () => {
     clearItemFromStorage()
     const vNomeAssistente: string = formData.nome
     addItemToStorage('NomeAssistente', vNomeAssistente);
-    setInterval(() => {
-      Paginar()
-    }, 2000);
-    return () => Paginar()
+    // setInterval(() => {
+    Paginar()
+    // }, 2000);
+    // return () => Paginar()
 
 
 
