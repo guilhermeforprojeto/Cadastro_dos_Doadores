@@ -18,6 +18,14 @@ const FrenteAssistidosForm: React.FC = () => {
 
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [noti, setNoti] = useState<Noti>({ tipo: '', msg: '' });
+
+  const [handleformData, setHandleFormData] = useState<any>({
+    id: '',
+    nome: '',
+    assistidosSelecionados: [],
+    assistidos: '',
+  });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setHandleFormData({ ...handleformData, [e.target.name]: e.target.value });
   };
@@ -74,13 +82,7 @@ const FrenteAssistidosForm: React.FC = () => {
       console.error('Erro ao excluir FRENTE:', error);
     }
   };
-  const [handleformData, setHandleFormData] = useState<any>({
-    id: '',
-    nome: '',
-    contato: '',
-    sacolinhasSelecionadas: [],
-    sacolinhaAtual: '',
-  });
+
   const [formData, setFormData] = useState<tFrenteAssistidos>({
 
     id: handleformData.nome,
@@ -100,21 +102,26 @@ const FrenteAssistidosForm: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
   const SaveForm = () => {
+
+    setFormData({
+      id: handleformData.id,
+      nome: handleformData.nome,
+      assistidos: handleformData.assistidosSelecionados,
+    });
+
     setNoti({ tipo: 'success', msg: 'Sacolainha cadastrada!' })
     console.log(formData)
+    setHandleFormData({
+      id: '',
+      nome: '',
+      assistidosSelecionados: [],
+      assistidos: '',
+    })
 
   }
-
-
-
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormData({
-      id: handleformData.nome,
-      nome: handleformData.nome,
-      assistidos: handleformData.contato,
-    })
+
     // console.log(handleformData)
     // console.log(e)
     // try {
@@ -151,7 +158,8 @@ const FrenteAssistidosForm: React.FC = () => {
       const response = await API.get('/frente-assistida'); // Substitua pela sua rota de API
       // setSacolasOP(response.data);
       setFrentesList(response.data.frenteAssistida)
-      console.log(response.data)
+      setSacolasOP(response.data.frenteAssistida)
+      console.log(response.data.frenteAssistida)
       setNoti({ tipo: "info", msg: response.data.message })
       // console.log(response)
     } catch (error) {
@@ -165,35 +173,58 @@ const FrenteAssistidosForm: React.FC = () => {
 
 
   const handleAdicionarSacolinha = () => {
-    if (handleformData.sacolinhaAtual && !handleformData.sacolinhasSelecionadas.includes(handleformData.sacolinhaAtual)) {
-      setHandleFormData({
-        id: '',
-        nome: '',
-        contato: '',
-        sacolinhasSelecionadas: [],
-        sacolinhaAtual: '',
-      })
+    if (handleformData.assistidos && !handleformData.assistidosSelecionados.includes(handleformData.assistidos)) {
       setHandleFormData({
         ...handleformData,
-        sacolinhasSelecionadas: [...handleformData.sacolinhasSelecionadas, handleformData.sacolinhaAtual],
-        sacolinhaAtual: '',
+        assistidosSelecionados: [...handleformData.assistidosSelecionados, handleformData.assistidos],
+        assistidos: '',
       });
+      setFormData({
+        id: handleformData.id,
+        nome: handleformData.nome,
+        assistidos: handleformData.assistidosSelecionados,
+      })
+      console.log(formData)
+      console.log(handleformData)
+      // setHandleFormData({
+      //   id: '',
+      //   // nome: '',
+      //   contato: '',
+      //   assistidosSelecionados: [],
+      //   assistidos: '',
+      // })
     } else {
-      console.error("Sacolainha já cadastrada!")
-      setNoti({ tipo: 'error', msg: 'Sacolainha já cadastrada!' })
+      console.error("Assistido já foi informado!")
+      setNoti({ tipo: 'warning', msg: 'Assistido já foi informado' })
     }
+    // setHandleFormData({
+    //   ...handleformData,
+    //   assistidosSelecionados: [...handleformData.assistidosSelecionados, handleformData.assistidos],
+    //   assistidos: '',
+    // });
   };
 
   const handleRemoverSacolinha = (sacolinha: string) => {
-    const novaListaSacolinhas = handleformData.sacolinhasSelecionadas.filter(
+    const novaListaSacolinhas = handleformData.assistidosSelecionados.filter(
       (item: string) => item !== sacolinha
     );
 
     setHandleFormData({
       ...handleformData,
-      sacolinhasSelecionadas: novaListaSacolinhas,
+      assistidosSelecionados: novaListaSacolinhas,
     });
   };
+
+
+  // const options = sacolasOP.map((opcao: any) => {
+  //   const valores: Array<string> = opcao.assistidos;
+  //   return valores.map((valor: string) => (
+  //     <option key={valor} value={valor}>
+  //       {valor}
+  //     </option>
+  //   ));
+  // });
+
   return (<>
     <Notify notificacao={noti} />
     <div className='container-header'>Assiste responsavel: {readItemFromStorage("NomeAssistente")} em {dataHoraAtual.toLocaleString('pt-BR', {
@@ -215,41 +246,52 @@ const FrenteAssistidosForm: React.FC = () => {
             required
           />
         </div>
+
         <div>
-          <label>Assistidos</label>
-          <input
-            type="text"
-            name="contato"
-            value={handleformData.contato}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <div>
+          {/* <div>
             <label>Sacolinhas Disponíveis:</label>
             <select
               name="sacolinhasDisponiveis"
-              value={handleformData.sacolinhaAtual}
+              value={handleformData.assistidos}
               onChange={(e) => {
-                setHandleFormData({ ...handleformData, sacolinhaAtual: e.target.value });
+                setHandleFormData({ ...handleformData, assistidos: e.target.value });
               }}
             >
               <option value="">Selecione uma sacolinha</option>
-              {sacolasOP.map((opcao: OpcaoSacolinha) => (
-                <option key={opcao.codigo} value={opcao.codigo}>
-                  {opcao.codigo}
-                </option>
-              ))}
+              <input
+                type="text"
+                name="contato"
+                value={handleformData.assistidos}
+                onChange={handleChange}
+                required
+              />
+              {options}
             </select>
             <button onClick={handleAdicionarSacolinha}>Adicionar Sacolinha</button>
-          </div>
+          </div> */}
 
           <div>
-            <label>Sacolinhas Selecionadas:</label>
+            <label>Informe 1 nome por vez e adcione</label>
+            <input
+              type="text"
+              name="assistidos"
+              value={handleformData.assistidos}
+              onChange={handleChange}
+              required
+            />
+
+
+            <button onClick={handleAdicionarSacolinha}>Adicionar Assistido</button>
+          </div>
+
+
+
+          <div>
+            <hr></hr>
+            <label>Assistidos informados:</label>
             <ul>
-              {handleformData.sacolinhasSelecionadas.map((sacolinha: any | React.Key | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined) => (
-                <li key={sacolinha}>
+              {handleformData.assistidosSelecionados.map((sacolinha: any | React.Key | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined) => (
+                <li key={sacolinha.id}>
                   {sacolinha}
                   <button onClick={() => handleRemoverSacolinha(sacolinha)}>
                     Remover
