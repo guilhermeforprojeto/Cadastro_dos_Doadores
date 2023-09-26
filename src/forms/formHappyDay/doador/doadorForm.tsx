@@ -3,107 +3,117 @@ import './doadorForm.css'
 import { API } from '../../../assets/api/api';
 import Notify from '../../../components/react-toastify/react-toastify';
 import { Noti } from '../../../components/react-toastify/Noti';
-import {
-  addItemToStorage,
-  readItemFromStorage,
-  deleteItemFromStorage,
-  clearItemFromStorage
-} from '../../../services/storage/storage';
+import { readItemFromStorage } from '../../../services/storage/storage';
 import { Doador } from './doador';
 
+interface OpcaoSacolinha {
+  codigo: string;
+}
 
 const DoadorForm: React.FC = () => {
   const [sacolas, setSacolas] = useState<Doador[]>([]);
+  const [sacolasOP, setSacolasOP] = useState<OpcaoSacolinha[]>([])
+  const [sacolasData, setSacolasData] = useState<OpcaoSacolinha[]>([])
   const [noti, setNoti] = useState<Noti>({ tipo: '', msg: '' });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setHandleFormData({ ...handleformData, [e.target.name]: e.target.value });
-  };
   const [doadorList, setDoadorList] = useState<Doador[]>([]);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
-
+  const [dataHoraAtual, setDataHoraAtual] = useState(new Date());
   const [handleformData, setHandleFormData] = useState<any>({
     id: '',
     nome: '',
+    status: '',
     contato: '',
     sacolinhasSelecionadas: [],
     sacolinhaAtual: '',
+    obs: ''
   });
   const [formData, setFormData] = useState<Doador>({
-    id: handleformData.id,
-    nome: handleformData.nome,
-    contato: handleformData.contato,
-    sacolinhas: handleformData.sacolinhasSelecionadas,
-
+    id: '',
+    status: '',
+    nome: '',
+    contato: '',
+    sacolinhas: [''],
+    obs: '',
   });
 
-  const [dataHoraAtual, setDataHoraAtual] = useState(new Date());
-
-  // Atualiza a data e hora a cada segundo
   useEffect(() => {
-
     loadDoadores()
     loadSacolas();
     const interval = setInterval(() => {
       setDataHoraAtual(new Date());
     }, 1000);
-
     return () => clearInterval(interval);
   }, []);
 
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setHandleFormData({ ...handleformData, [e.target.name]: e.target.value, status: "Doada" });
+    setFormData({
+      id: handleformData.id,
+      status: handleformData.status,
+      nome: handleformData.nome,
+      contato: handleformData.contato,
+      sacolinhas: handleformData.sacolinhasSelecionadas,
+      obs: handleformData.obs,
+    })
+  };
+  // const handleEditClick = (id: string) => {
+  //   setEditingItemId(id);
+  //   // Preencha os campos de edição com os dados atuais da sacola
+  //   const doadorAtual = sacolas.find((sacola) => sacola.id === id);
+  //   if (doadorAtual) {
+  //     setFormData({ ...formData, ...doadorAtual });
+  //   }
+  // };
 
-
-
-  const SaveForm = async () => {
-    try {
-      const response = await API.post('/doadores', formData); // Substitua pela sua rota de API
-      setNoti({ tipo: "success", msg: response.data.message })
-      console.warn(formData)
-
-      setFormData({
-        id: '',
-        nome: '',
-        contato: '',
-        sacolinhas: [],
-      });
-      console.log(response)
-      if (response.status === 201) {
-        setNoti({ tipo: "success", msg: response.data.message })
-        console.log('Sacola criada com sucesso!', response.data.message);
-      } else {
-        console.error('Erro ao criar sacola:', response.data.message);
-        console.warn(formData)
-
-      }
-    }
-    catch (error) {
-      const deuruim: any = error
-      setNoti({ tipo: "error", msg: `${deuruim.response.data.message}` })
-      console.warn(formData)
-
-      // console.error('Erro ao criar sacola:', error);
-      // console.log(error);
-      // console.log(deuruim.response.data.message);
-    }
-
-    ;
-  }
+  // const handleSaveEdit = async (id: string) => {
+  //   try {
+  //     const response = await API.put('/doadores/' + id, formData); // Substitua pela sua rota de API
+  //     loadDoadores();
+  //     setFormData({
+  //       id: '',
+  //       status: '',
+  //       nome: '',
+  //       contato: '',
+  //       sacolinhas: [],
+  //       obs: ''
+  //     });
+  //     setNoti({ tipo: "success", msg: response.data.message })
+  //     // if (response.status === 201) {
+  //     //   setNoti({ tipo: "success", msg: response.data.message })
+  //     //   console.log('Sacola criada com sucesso!', response.data.message);
+  //     // } else {
+  //     //   console.error('Erro ao criar sacola:', response.data.message);
+  //     // }
+  //   }
+  //   catch (error) {
+  //     setNoti({ tipo: "error", msg: "Erro ao criar sacola" })
+  //     console.error('Erro ao criar sacola:', error);
+  //   }
+  //   // Implemente a lógica para salvar as alterações na sacola com o ID especificado
+  //   // Normalmente, você faria uma chamada à API para atualizar os dados no servidor
+  //   // Aqui, você pode apenas cancelar o modo de edição
+  //   setEditingItemId(null);
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormData({
       id: handleformData.id,
+      status: handleformData.status,
       nome: handleformData.nome,
       contato: handleformData.contato,
       sacolinhas: handleformData.sacolinhasSelecionadas,
+      obs: handleformData.obs,
     })
+    console.log(formData)
+    console.log(handleformData)
   };
   const handleDelete = async (FRENTE: Doador) => {
     try {
       await API.delete(`/doadores/${FRENTE.id}`); // Substitua pela sua rota de API
       setNoti({ tipo: "success", msg: "FRENTE " + FRENTE.nome + " deletada com suceso" })
-      loadSacolas();
+      loadDoadores();
     } catch (error) {
       setNoti({ tipo: "error", msg: "Não foi possivel apagar " })
       console.error('Erro ao excluir FRENTE:', error);
@@ -111,46 +121,16 @@ const DoadorForm: React.FC = () => {
   };
 
 
-  const loadSacolas = async () => {
-    try {
-      const response = await API.get('/sacolas'); // Substitua pela sua rota de API
-      setSacolasOP(response.data.sacolas);
-      console.log(sacolasOP)
-      setNoti({ tipo: "info", msg: response.data.message })
-      // console.log(response)
-    } catch (error) {
-      console.error('Erro ao carregar sacolas:', error);
-    }
-  };
-
-  const loadDoadores = async () => {
-    try {
-      const response = await API.get('/doadores'); // Substitua pela sua rota de API
-      // setSacolasOP(response.data);
-      setDoadorList(response.data.doadores)
-      // setSacolasOP(response.data.doadores)
-      console.log(response.data.doadores)
-      setNoti({ tipo: "info", msg: response.data.message })
-      // console.log(response)
-    } catch (error) {
-      console.error('Erro ao carregar sacolas:', error);
-    }
-  };
-
-  interface OpcaoSacolinha {
-    codigo: string;
-  }
-  const [sacolasOP, setSacolasOP] = useState<OpcaoSacolinha[]>([])
-
-
   const handleAdicionarSacolinha = () => {
     if (handleformData.sacolinhaAtual && !handleformData.sacolinhasSelecionadas.includes(handleformData.sacolinhaAtual)) {
       setHandleFormData({
         id: '',
+        status: '',
         nome: '',
         contato: '',
         sacolinhasSelecionadas: [],
         sacolinhaAtual: '',
+        obs: ''
       })
       setHandleFormData({
         ...handleformData,
@@ -173,6 +153,75 @@ const DoadorForm: React.FC = () => {
       sacolinhasSelecionadas: novaListaSacolinhas,
     });
   };
+
+
+  const loadDoadores = async () => {
+    try {
+      const response = await API.get('/doadores'); // Substitua pela sua rota de API
+      // setSacolasOP(response.data);
+      // console.log(response.data);
+      setDoadorList(response.data.doadores)
+      // setSacolasOP(response.data.doadores)
+      // console.log(response.data.doadores)
+      setNoti({ tipo: "info", msg: response.data.message })
+      // console.log(response)
+    } catch (error) {
+      console.error('Erro ao carregar sacolas:', error);
+    }
+  };
+  const loadSacolas = async () => {
+    try {
+      const response = await API.get('/sacolas'); // Substitua pela sua rota de API
+      setSacolasOP(response.data.sacolas);
+      setSacolasData(response.data)
+      // console.log("sacolasData")
+      // console.log(sacolasData)
+      setNoti({ tipo: "info", msg: response.data.message })
+      // console.log(response)
+    } catch (error) {
+      console.error('Erro ao carregar sacolas:', error);
+    }
+  };
+  const SaveForm = async () => {
+    console.warn("SaveForm diz")
+    console.log(formData)
+    console.log(handleformData)
+    try {
+      const response = await API.post('/doadores', formData); // Substitua pela sua rota de API
+      setNoti({ tipo: "success", msg: response.data.message })
+      console.log(response.data)
+      if (response.status === 201) {
+        setNoti({ tipo: "success", msg: response.data.message })
+        console.log('Doador criado com sucesso!', response.data.message);
+        setHandleFormData({
+          id: '',
+          nome: '',
+          status: '',
+          contato: '',
+          sacolinhasSelecionadas: [],
+          sacolinhaAtual: '',
+          obs: ''
+        });
+        // setFormData({
+        //   id: '',
+        //   status: '',
+        //   nome: '',
+        //   contato: '',
+        //   sacolinhas: [],
+        //   obs: ''
+        // });
+        loadDoadores()
+      } else {
+        console.error('Erro ao criar Doador:', response.data.message);
+
+      }
+    }
+    catch (error) {
+      const deuruim: any = error
+      setNoti({ tipo: "error", msg: `${deuruim.response.data.message}` })
+      console.warn(formData)
+    }
+  }
   return (<>
     <Notify notificacao={noti} />
     <div className='containerDoador-header'>Assiste responsavel: {readItemFromStorage("NomeAssistente")} em {dataHoraAtual.toLocaleString('pt-BR', {
@@ -223,7 +272,6 @@ const DoadorForm: React.FC = () => {
               </select>
               <button onClick={handleAdicionarSacolinha}>Adicionar Sacolinha</button>
             </div>
-
             <div>
               <label>Sacolinhas Selecionadas:</label>
               <ul>
@@ -237,6 +285,16 @@ const DoadorForm: React.FC = () => {
                 ))}
               </ul>
             </div>
+            <div>
+              <label>Observações</label>
+              <input
+                type="text"
+                name="obs"
+                value={handleformData.obs}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
           <button >Limpar</button>
           <button onClick={SaveForm}>Salvar</button>
@@ -244,13 +302,15 @@ const DoadorForm: React.FC = () => {
       </div>
     </div>
     <div className='tableContainerFrenteAss' >
-      <label>Listgem - Doadores</label>
+      <label>Listagem - Doadores</label>
       <table>
         <thead>
           <tr>
+            <th>Status</th>
             <th>Nome</th>
             <th>Contato</th>
             <th>Sacolinhas</th>
+            <th>obs</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -258,6 +318,18 @@ const DoadorForm: React.FC = () => {
           doadorList.map((sacola) => (
             <tbody>
               <tr key={sacola.id}>
+                <td>
+                  {editingItemId === sacola.id ? (
+
+                    <input
+                      type="text"
+                      name="status"
+                      value={formData.status}
+                      onChange={handleChange}
+                    />) : (
+                    sacola.status
+                  )}
+                </td>
                 <td>
                   {editingItemId === sacola.id ? (
 
@@ -274,7 +346,7 @@ const DoadorForm: React.FC = () => {
                   {editingItemId === sacola.id ? (
                     <input
                       type="text"
-                      name="assistidos"
+                      name="contato"
                       value={formData.contato}
                       onChange={handleChange}
                     />) : (
@@ -285,14 +357,23 @@ const DoadorForm: React.FC = () => {
                   {editingItemId === sacola.id ? (
                     <input
                       type="text"
-                      name="assistidos"
+                      name="sacolinhas"
                       value={formData.sacolinhas}
                       onChange={handleChange}
                     />) : (
                     sacola.sacolinhas.join(", ")
                   )}
+                </td>            <td>
+                  {editingItemId === sacola.id ? (
+                    <input
+                      type="text"
+                      name="obs"
+                      value={formData.obs}
+                      onChange={handleChange}
+                    />) : (
+                    sacola.obs
+                  )}
                 </td>
-
                 <td>
                   {/* {editingItemId === sacola.id ? (
                     <button onClick={() => handleSaveEdit(sacola.id)}>Salvar</button>

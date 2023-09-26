@@ -15,6 +15,11 @@
   /* Alinhe o conteúdo ao centro */
 }
 
+a {
+  /* font-size: large; */
+  text-decoration: none;
+}
+
 /* .color1 { #f7dece };
 .color2 { #eed7c5 };
 .color3 { #ccccbb };

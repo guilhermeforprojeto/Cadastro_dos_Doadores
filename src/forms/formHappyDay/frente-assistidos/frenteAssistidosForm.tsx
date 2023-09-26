@@ -294,7 +294,7 @@ const FrenteAssistidosForm: React.FC = () => {
       <table>
         <thead>
           <tr>
-            <th>Nome</th>
+            <th>Código</th>
             <th>Assistidos</th>
             <th>Ação</th>
           </tr>

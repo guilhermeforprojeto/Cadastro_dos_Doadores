@@ -39,15 +39,16 @@ export default function Header() {
                   <Link to="/" className="nav-link">Reiniciar</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/sacola" className="nav-link">Sacola</Link>
+                  <Link to="/doador" className="nav-link">Doador</Link>
                 </li>
-
-
                 <li className="nav-item">
-                  <Link to="/doador" className="nav-link">Doação</Link>
+                  <Link to="/sacola" className="nav-link">Sacola</Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/frente-assistidos" className="nav-link">Frente Assistidos</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/doacao" className="nav-link">Doações</Link>
                 </li>
               </ul>
             </nav>
