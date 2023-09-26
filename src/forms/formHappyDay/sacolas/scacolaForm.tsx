@@ -68,8 +68,6 @@ const SacolaForm: React.FC = () => {
     loadSacolas();
     setFormData({ ...formData, assistentesocial: cNomeAssistente[0], status: 'Registrada', doador: '(ñ relacionado)' });
     console.log(formData)
-
-
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

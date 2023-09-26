@@ -41,6 +41,9 @@ const DoadorForm: React.FC = () => {
 
   // Atualiza a data e hora a cada segundo
   useEffect(() => {
+
+    loadDoadores()
+    loadSacolas();
     const interval = setInterval(() => {
       setDataHoraAtual(new Date());
     }, 1000);
@@ -51,9 +54,40 @@ const DoadorForm: React.FC = () => {
 
 
 
-  const SaveForm = () => {
-    setNoti({ tipo: 'success', msg: 'Sacolainha cadastrada!' })
-    console.log(formData)
+
+  const SaveForm = async () => {
+    try {
+      const response = await API.post('/doadores', formData); // Substitua pela sua rota de API
+      setNoti({ tipo: "success", msg: response.data.message })
+      console.warn(formData)
+
+      setFormData({
+        id: '',
+        nome: '',
+        contato: '',
+        sacolinhas: [],
+      });
+      console.log(response)
+      if (response.status === 201) {
+        setNoti({ tipo: "success", msg: response.data.message })
+        console.log('Sacola criada com sucesso!', response.data.message);
+      } else {
+        console.error('Erro ao criar sacola:', response.data.message);
+        console.warn(formData)
+
+      }
+    }
+    catch (error) {
+      const deuruim: any = error
+      setNoti({ tipo: "error", msg: `${deuruim.response.data.message}` })
+      console.warn(formData)
+
+      // console.error('Erro ao criar sacola:', error);
+      // console.log(error);
+      // console.log(deuruim.response.data.message);
+    }
+
+    ;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -76,10 +110,6 @@ const DoadorForm: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    loadSacolas();
-    loadDoadores()
-  }, []);
 
   const loadSacolas = async () => {
     try {
@@ -221,6 +251,7 @@ const DoadorForm: React.FC = () => {
             <th>Nome</th>
             <th>Contato</th>
             <th>Sacolinhas</th>
+            <th>Ações</th>
           </tr>
         </thead>
         {formData.id.length == 0 ?
@@ -258,7 +289,7 @@ const DoadorForm: React.FC = () => {
                       value={formData.sacolinhas}
                       onChange={handleChange}
                     />) : (
-                    sacola.sacolinhas
+                    sacola.sacolinhas.join(", ")
                   )}
                 </td>
 
