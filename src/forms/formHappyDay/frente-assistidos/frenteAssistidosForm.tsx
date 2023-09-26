@@ -129,31 +129,29 @@ const FrenteAssistidosForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // console.log(handleformData)
-    // console.log(e)
-    // try {
-    //   const response = await API.post('/sacolas', formData); // Substitua pela sua rota de API
-    //   // loadSacolas();
-    //   setFormData({
-    //     id: '',
-    //     codigo: '',
-    //     nome: '',
-    //     contato: '',
-    //     sacolinhas: '',
-    //   });
-    //   setNoti({ tipo: "success", msg: response.data.message })
+    console.log(handleformData)
+    console.log(e)
+    try {
+      const response = await API.post('/frente-assistida', formData); // Substitua pela sua rota de API
+      // loadSacolas();
+      setFormData({
+        id: '',
+        nome: '',
+        assistidos: [],
+      });
+      setNoti({ tipo: "success", msg: response.data.message })
 
-    //   if (response.status === 201) {
-    //     setNoti({ tipo: "success", msg: response.data.message })
-    //     console.log('Sacola criada com sucesso!', response.data.message);
-    //   } else {
-    //     console.error('Erro ao criar sacola:', response.data.message);
-    //   }
-    // }
-    // catch (error) {
-    //   setNoti({ tipo: "error", msg: "Erro ao criar sacola" })
-    //   console.error('Erro ao criar sacola:', error);
-    // }
+      if (response.status === 201) {
+        setNoti({ tipo: "success", msg: response.data.message })
+        console.log('Sacola criada com sucesso!', response.data.message);
+      } else {
+        console.error('Erro ao criar sacola:', response.data.message);
+      }
+    }
+    catch (error) {
+      setNoti({ tipo: "error", msg: "Erro ao criar sacola" })
+      console.error('Erro ao criar sacola:', error);
+    }
   };
 
   useEffect(() => {
@@ -304,9 +302,10 @@ const FrenteAssistidosForm: React.FC = () => {
           <tr>
             <th>Nome</th>
             <th>Assistidos</th>
+            <th>Ação</th>
           </tr>
         </thead>
-        {formData.id.length > 0 ?
+        {formData.id.length == 0 ?
           frentesList.map((sacola) => (
             <tbody>
               <tr key={sacola.id}>
@@ -330,7 +329,7 @@ const FrenteAssistidosForm: React.FC = () => {
                       value={formData.assistidos}
                       onChange={handleChange}
                     />) : (
-                    sacola.assistidos
+                    sacola.assistidos.join(", ")
                   )}
                 </td>
 

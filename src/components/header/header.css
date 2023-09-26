@@ -21,10 +21,11 @@
   height: 100%;
   background-color: transparent;
   /* Defina a cor de fundo como transparente */
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(2px);
   /* Aplica um desfoque de 10px ao fundo */
-  animation: slideInUp 0.5s ease-in-out;
-  animation: slideInUp 0.5s ease-in-out;
+  animation: slideInUp 0.2s ease-in-out;
+  animation: slideInUp 0.2s ease-in-out;
+  box-shadow: -12px 14px 6px rgb(0 0 0 / 22%);
 }
 
 @keyframes slideInUp {
