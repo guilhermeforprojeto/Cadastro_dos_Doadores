@@ -106,8 +106,8 @@ const DoadorForm: React.FC = () => {
       sacolinhas: handleformData.sacolinhasSelecionadas,
       obs: handleformData.obs,
     })
-    console.log(formData)
-    console.log(handleformData)
+    // console.log(formData)
+    // console.log(handleformData)
   };
   const handleDelete = async (FRENTE: Doador) => {
     try {
@@ -159,7 +159,7 @@ const DoadorForm: React.FC = () => {
     try {
       const response = await API.get('/doadores'); // Substitua pela sua rota de API
       // setSacolasOP(response.data);
-      // console.log(response.data);
+      console.log(response.data);
       setDoadorList(response.data.doadores)
       // setSacolasOP(response.data.doadores)
       // console.log(response.data.doadores)
@@ -168,6 +168,7 @@ const DoadorForm: React.FC = () => {
     } catch (error) {
       console.error('Erro ao carregar sacolas:', error);
     }
+
   };
   const loadSacolas = async () => {
     try {
@@ -189,10 +190,10 @@ const DoadorForm: React.FC = () => {
     try {
       const response = await API.post('/doadores', formData); // Substitua pela sua rota de API
       setNoti({ tipo: "success", msg: response.data.message })
-      console.log(response.data)
+      // console.log(response.data)
       if (response.status === 201) {
         setNoti({ tipo: "success", msg: response.data.message })
-        console.log('Doador criado com sucesso!', response.data.message);
+        // console.log('Doador criado com sucesso!', response.data.message);
         setHandleFormData({
           id: '',
           nome: '',
@@ -254,6 +255,16 @@ const DoadorForm: React.FC = () => {
             />
           </div>
           <div>
+            <label>Observações</label>
+            <input
+              type="text"
+              name="obs"
+              value={handleformData.obs}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
             <div>
               <label>Sacolinhas Disponíveis:</label>
               <select
@@ -285,22 +296,16 @@ const DoadorForm: React.FC = () => {
                 ))}
               </ul>
             </div>
-            <div>
-              <label>Observações</label>
-              <input
-                type="text"
-                name="obs"
-                value={handleformData.obs}
-                onChange={handleChange}
-                required
-              />
-            </div>
+
           </div>
           <button >Limpar</button>
           <button onClick={SaveForm}>Salvar</button>
         </form>
       </div>
     </div>
+    {/* LISTA 
+    LISTA 
+    LISTA  */}
     <div className='tableContainerFrenteAss' >
       <label>Listagem - Doadores</label>
       <table>
