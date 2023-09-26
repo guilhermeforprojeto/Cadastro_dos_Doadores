@@ -15,9 +15,13 @@ import { Doador } from './doador';
 const DoadorForm: React.FC = () => {
   const [sacolas, setSacolas] = useState<Doador[]>([]);
   const [noti, setNoti] = useState<Noti>({ tipo: '', msg: '' });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setHandleFormData({ ...handleformData, [e.target.name]: e.target.value });
   };
+  const [doadorList, setDoadorList] = useState<Doador[]>([]);
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+
   const [handleformData, setHandleFormData] = useState<any>({
     id: '',
     nome: '',
@@ -26,7 +30,7 @@ const DoadorForm: React.FC = () => {
     sacolinhaAtual: '',
   });
   const [formData, setFormData] = useState<Doador>({
-
+    id: handleformData.id,
     nome: handleformData.nome,
     contato: handleformData.contato,
     sacolinhas: handleformData.sacolinhasSelecionadas,
@@ -55,14 +59,26 @@ const DoadorForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormData({
+      id: handleformData.id,
       nome: handleformData.nome,
       contato: handleformData.contato,
       sacolinhas: handleformData.sacolinhasSelecionadas,
     })
   };
+  const handleDelete = async (FRENTE: Doador) => {
+    try {
+      await API.delete(`/doadores/${FRENTE.id}`); // Substitua pela sua rota de API
+      setNoti({ tipo: "success", msg: "FRENTE " + FRENTE.nome + " deletada com suceso" })
+      loadSacolas();
+    } catch (error) {
+      setNoti({ tipo: "error", msg: "Não foi possivel apagar " })
+      console.error('Erro ao excluir FRENTE:', error);
+    }
+  };
 
   useEffect(() => {
     loadSacolas();
+    loadDoadores()
   }, []);
 
   const loadSacolas = async () => {
@@ -76,6 +92,21 @@ const DoadorForm: React.FC = () => {
       console.error('Erro ao carregar sacolas:', error);
     }
   };
+
+  const loadDoadores = async () => {
+    try {
+      const response = await API.get('/doadores'); // Substitua pela sua rota de API
+      // setSacolasOP(response.data);
+      setDoadorList(response.data.doadores)
+      // setSacolasOP(response.data.doadores)
+      console.log(response.data.doadores)
+      setNoti({ tipo: "info", msg: response.data.message })
+      // console.log(response)
+    } catch (error) {
+      console.error('Erro ao carregar sacolas:', error);
+    }
+  };
+
   interface OpcaoSacolinha {
     codigo: string;
   }
@@ -182,6 +213,70 @@ const DoadorForm: React.FC = () => {
         </form>
       </div>
     </div>
+    <div className='tableContainerFrenteAss' >
+      <label>Listgem - Doadores</label>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Contato</th>
+            <th>Sacolinhas</th>
+          </tr>
+        </thead>
+        {formData.id.length == 0 ?
+          doadorList.map((sacola) => (
+            <tbody>
+              <tr key={sacola.id}>
+                <td>
+                  {editingItemId === sacola.id ? (
+
+                    <input
+                      type="text"
+                      name="nome"
+                      value={formData.nome}
+                      onChange={handleChange}
+                    />) : (
+                    sacola.nome
+                  )}
+                </td>
+                <td>
+                  {editingItemId === sacola.id ? (
+                    <input
+                      type="text"
+                      name="assistidos"
+                      value={formData.contato}
+                      onChange={handleChange}
+                    />) : (
+                    sacola.contato
+                  )}
+                </td>
+                <td>
+                  {editingItemId === sacola.id ? (
+                    <input
+                      type="text"
+                      name="assistidos"
+                      value={formData.sacolinhas}
+                      onChange={handleChange}
+                    />) : (
+                    sacola.sacolinhas
+                  )}
+                </td>
+
+                <td>
+                  {/* {editingItemId === sacola.id ? (
+                    <button onClick={() => handleSaveEdit(sacola.id)}>Salvar</button>
+                  ) : (
+                    <button onClick={() => handleEditClick(sacola.id)}>Editar</button>
+                  )} */}
+                  <button onClick={() => handleDelete(sacola)}>Excluir</button>
+                </td>
+              </tr>
+            </tbody>
+          ))
+          : <span><h1>Não existe Frentes cadastradas</h1></span>}
+      </table>
+    </div>
+
   </>
   );
 };

@@ -365,11 +365,11 @@ const SacolaForm: React.FC = () => {
               </td>
 
               <td>
-                {editingItemId === sacola.id ? (
+                {/* {editingItemId === sacola.id ? (
                   <button onClick={() => handleSaveEdit(sacola.id)}>Salvar</button>
                 ) : (
                   <button onClick={() => handleEditClick(sacola.id)}>Editar</button>
-                )}
+                )} */}
                 <button onClick={() => handleDelete(sacola)}>Excluir</button>
               </td>
             </tr>

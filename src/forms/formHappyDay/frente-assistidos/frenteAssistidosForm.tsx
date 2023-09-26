@@ -56,7 +56,7 @@ const FrenteAssistidosForm: React.FC = () => {
   const handleSaveEdit = async (id: string) => {
     try {
       const response = await API.put('/frente-assistida/' + id, formData); // Substitua pela sua rota de API
-      loadSacolas();
+      loadFrenteAss();
       setFrentesList([
         {
           id: '',
@@ -91,7 +91,7 @@ const FrenteAssistidosForm: React.FC = () => {
     try {
       await API.delete(`/frente-assistida/${FRENTE.id}`); // Substitua pela sua rota de API
       setNoti({ tipo: "success", msg: "FRENTE " + FRENTE.nome + " deletada com suceso" })
-      loadSacolas();
+      loadFrenteAss();
     } catch (error) {
       setNoti({ tipo: "error", msg: "Não foi possivel apagar " })
       console.error('Erro ao excluir FRENTE:', error);
@@ -111,37 +111,26 @@ const FrenteAssistidosForm: React.FC = () => {
 
     return () => clearInterval(interval);
   }, []);
-  const SaveForm = () => {
+  const SaveForm = async () => {
     handleAdicionarSacolinha()
-    // setNoti({ tipo: 'success', msg: 'Sacolainha cadastrada!' })
-    // setFormData({
-    //   id: '',
-    //   nome: '',
-    //   assistidos: [...handleformData.assistidosSelecionados]
-    // })
-
-    // console.log(handleformData.assistidosSelecionados)
-    console.warn(formData)
-    // console.warn(formData.assistidos)
-    console.log(handleformData.assistidosSelecionados)
-
-  }
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    console.log(handleformData)
-    console.log(e)
     try {
       const response = await API.post('/frente-assistida', formData); // Substitua pela sua rota de API
-      // loadSacolas();
+      // loadFrenteAss();
       setFormData({
         id: '',
         nome: '',
         assistidos: [],
       });
+      setHandleFormData({
+        id: '',
+        nome: '',
+        assistidosSelecionados: [],
+        assistidos: '',
+      })
       setNoti({ tipo: "success", msg: response.data.message })
 
       if (response.status === 201) {
+        loadFrenteAss()
         setNoti({ tipo: "success", msg: response.data.message })
         console.log('Sacola criada com sucesso!', response.data.message);
       } else {
@@ -152,13 +141,17 @@ const FrenteAssistidosForm: React.FC = () => {
       setNoti({ tipo: "error", msg: "Erro ao criar sacola" })
       console.error('Erro ao criar sacola:', error);
     }
+
+  }
+  const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | React.FormEvent) => {
+    e.preventDefault();
   };
 
   useEffect(() => {
-    loadSacolas();
+    loadFrenteAss();
   }, []);
 
-  const loadSacolas = async () => {
+  const loadFrenteAss = async () => {
     try {
       const response = await API.get('/frente-assistida'); // Substitua pela sua rota de API
       // setSacolasOP(response.data);
@@ -268,6 +261,7 @@ const FrenteAssistidosForm: React.FC = () => {
               name="assistidos"
               value={handleformData.assistidos}
               onChange={handleChange}
+              required
             />
             <button onClick={handleAdicionarSacolinha}>Adicionar Assistido</button>
           </div>
@@ -334,11 +328,11 @@ const FrenteAssistidosForm: React.FC = () => {
                 </td>
 
                 <td>
-                  {editingItemId === sacola.id ? (
+                  {/* {editingItemId === sacola.id ? (
                     <button onClick={() => handleSaveEdit(sacola.id)}>Salvar</button>
                   ) : (
                     <button onClick={() => handleEditClick(sacola.id)}>Editar</button>
-                  )}
+                  )} */}
                   <button onClick={() => handleDelete(sacola)}>Excluir</button>
                 </td>
               </tr>
