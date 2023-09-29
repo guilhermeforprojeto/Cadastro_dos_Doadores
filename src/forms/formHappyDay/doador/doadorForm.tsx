@@ -18,6 +18,12 @@ const DoadorForm: React.FC = () => {
   const [doadorList, setDoadorList] = useState<Doador[]>([]);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [dataHoraAtual, setDataHoraAtual] = useState(new Date());
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchResults, setSearchResults] = useState<OpcaoSacolinha[]>([]);
+  const [opensearchResults, OpensetSearchResults] = useState<Boolean>(false);
+
+  const [namePreSearch, setNamePreSearch] = useState('')
+
   const [handleformData, setHandleFormData] = useState<any>({
     id: '',
     nome: '',
@@ -45,7 +51,26 @@ const DoadorForm: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const initialOptions: OpcaoSacolinha[] = [
+      // ...suas opções de sacolinha inicial
+    ];
+    setSacolasOP(initialOptions);
+  }, []);
 
+  // Atualize a lista de resultados à medida que o usuário digita
+  useEffect(() => {
+    const filteredResults = sacolasOP.filter((opcao) =>
+      opcao.codigo.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setSearchResults(filteredResults);
+
+    console.log(searchResults)
+  }, [searchTerm, sacolasOP]);
+
+  const HandleSearch = (searchTerm: string) => {
+    setSearchTerm(searchTerm);
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setHandleFormData({ ...handleformData, [e.target.name]: e.target.value, status: "Doada" });
     setFormData({
@@ -137,6 +162,8 @@ const DoadorForm: React.FC = () => {
         sacolinhasSelecionadas: [...handleformData.sacolinhasSelecionadas, handleformData.sacolinhaAtual],
         sacolinhaAtual: '',
       });
+      OpensetSearchResults(false)
+      setSearchTerm('')
     } else {
       console.error("Sacolainha já cadastrada!")
       setNoti({ tipo: 'error', msg: 'Sacolainha já cadastrada!' })
@@ -154,6 +181,17 @@ const DoadorForm: React.FC = () => {
     });
   };
 
+
+  // const HandleSearch = (e: string) => {
+  //   console.log(e);
+  //   setNamePreSearch(e);
+
+  //   const namePreSearch = sacolasOP.filter((opcao: OpcaoSacolinha) =>
+  //     opcao.codigo.toLowerCase().includes(e.toLowerCase())
+  //   );
+
+  //   console.log(namePreSearch);
+  // };
 
   const loadDoadores = async () => {
     try {
@@ -268,8 +306,40 @@ const DoadorForm: React.FC = () => {
           </div>
           <div>
             <div>
-              <label>Sacolinhas Disponíveis:</label>
-              <select
+              <label>Pesquisar Sacolinhas</label>
+              <div>
+                <input
+                  type="text"
+                  onClick={() => OpensetSearchResults(true)}
+                  name="sacolinhasDisponiveis"
+                  placeholder="Pesquisar sacolinha..."
+                  value={searchTerm}
+                  onChange={(e) => {
+                    setHandleFormData({ ...handleformData, sacolinhaAtual: searchTerm })
+                    HandleSearch(e.target.value)
+                  }}
+                />Selecione a sacolinha:
+                {!opensearchResults ?
+                  "" :
+
+                  <ul >
+                    {searchResults.map((opcao: OpcaoSacolinha) => (
+                      opcao.codigo == searchTerm ? "Código " + searchTerm + " selecionado" :
+                        <li onClick={() => {
+                          setSearchTerm(opcao.codigo)
+                          setHandleFormData({ ...handleformData, sacolinhaAtual: searchTerm })
+                        }}
+                          value={opcao.codigo}
+                          key={opcao.codigo}>
+                          {opcao.codigo}</li>
+                    ))}
+                  </ul>
+
+                }
+
+              </div>
+
+              {/* <select
                 name="sacolinhasDisponiveis"
                 value={handleformData.sacolinhaAtual}
                 onChange={(e) => {
@@ -282,7 +352,7 @@ const DoadorForm: React.FC = () => {
                     {opcao.codigo}
                   </option>
                 ))}
-              </select>
+              </select> */}
               <button onClick={handleAdicionarSacolinha}>Adicionar Sacolinha</button>
             </div>
             <div>
