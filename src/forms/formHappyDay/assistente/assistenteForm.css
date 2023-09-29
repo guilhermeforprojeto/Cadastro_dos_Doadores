@@ -1,21 +1,67 @@
 .contextAssistenteForm {
-  width: 100%;
   max-width: 500px;
   margin: 0 auto;
   padding: 20px;
   background-color: #fff;
 }
 
-.container-formAssistenteForm {
+.containerformAssistenteForm {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
-h1 {
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  /* Espaçamento entre os elementos */
+  /* width: 100%; */
+  /* Define a largura total para o container */
+}
+
+.input-container h1 {
   font-size: 24px;
   font-weight: bold;
   text-align: center;
+  overflow: hidden;
+  color: #181a1b;
+  /* Oculta o texto que não está visível inicialmente */
+  white-space: nowrap;
+  /* Evita quebras de linha */
+  border-right: 2px solid transparent;
+  /* Cria um "cursor" piscante */
+  animation: typing 3s steps(20, end), blink-caret 0.5s step-end infinite;
+}
+
+/* Animação de digitação do texto */
+@keyframes typing {
+  from {
+    width: 0;
+    /* Começa com a largura do texto como zero */
+  }
+
+  to {
+    width: 100%;
+    /* Aumenta gradualmente a largura até 100% */
+  }
+}
+
+/* Animação do cursor piscante */
+@keyframes blink-caret {
+
+  from,
+  to {
+    border-color: transparent;
+    /* Cursor invisível */
+  }
+
+  50% {
+    border-color: #000;
+    /* Cursor visível */
+  }
 }
 
 label {
@@ -34,8 +80,10 @@ input {
 }
 
 button {
-  width: 70%;
+  margin: 20px 0 0 0;
+  width: 50%;
   background-color: #007bff;
+
   color: #fff;
   padding: 10px;
   border: none;
@@ -46,6 +94,7 @@ button {
 
 button:hover {
   background-color: #0069d9;
+
 }
 
 .noti {

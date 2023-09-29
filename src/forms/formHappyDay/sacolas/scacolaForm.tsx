@@ -89,6 +89,22 @@ const SacolaForm: React.FC = () => {
     console.log(event.target.value)
 
   }
+
+  const POPULARBANCO = async () => {
+    for (let i = 1; i <= 1000; i++) {
+      const codigo = `S${i.toString().padStart(4, '0')}`;
+      const response = await API.post('/sacolas', {
+        codigo,
+        status: `DOADOS000${i}`,
+        assistentesocial: `assistentesocialS000${i}`,
+        nomefrenteassistida: `nomefrenteassistidaS000${i}`,
+        assistido: `ASSISITOSS000${i}`,
+        doador: `DOADORS000${i}`,
+        obs: `OBSERVACAOS000${i}`
+      });
+      console.warn(response)
+    }
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Lógica para criar a sacola aqui
@@ -265,7 +281,10 @@ const SacolaForm: React.FC = () => {
         </div>
 
         <button type="submit">Criar Sacola</button>
+        <br></br>
         <button >Limpar </button>
+        <br></br>
+        <button onClick={POPULARBANCO}>CUIDADO!! Adiconar 1000 sacolas!!! </button>
       </form>
 
       <br></br>

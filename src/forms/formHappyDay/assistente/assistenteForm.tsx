@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './assistenteForm.css'
-import { API } from '../../../assets/api/api';
 import Notify from '../../../components/react-toastify/react-toastify';
 import { Noti } from '../../../components/react-toastify/Noti';
 import {
   addItemToStorage,
-  readItemFromStorage,
-  deleteItemFromStorage,
   clearItemFromStorage
 } from '../../../services/storage/storage';
-import { Link, Router } from 'react-router-dom';
-import DoadorForm from '../doador/doadorForm';
 
 
 interface Sacola {
@@ -62,9 +57,9 @@ const AssistenteForm: React.FC = () => {
     <>
       <Notify notificacao={noti} />
       <div className='contextAssistenteForm'>
-        <form className='container-formAssistenteForm' onSubmit={handleSubmit}>
-          <h1>Olá Assistente!😁</h1>
-          <div>
+        <form className='containerformAssistenteForm' onSubmit={handleSubmit}>
+          <div className='input-container'>
+            <h1>Olá Assistente!😁</h1>
             <input
               placeholder='Informe seu nome...'
               type="text"

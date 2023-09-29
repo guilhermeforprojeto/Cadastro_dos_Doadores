@@ -35,20 +35,24 @@ export default function Header() {
           <div onClick={toggleMenu} className='navClass'>
             <nav className="navClassContexto">
               <ul className="nav-list">
+
                 <li className="nav-item">
-                  <Link to="/" className="nav-link">Reiniciar</Link>
+                  <Link to="/doador" className="nav-link">Doadores</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/doador" className="nav-link">Doador</Link>
+                  <Link to="/sacola" className="nav-link">Sacolas</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/sacola" className="nav-link">Sacola</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/frente-assistidos" className="nav-link">Frente Assistidos</Link>
+                  <Link to="/frente-assistidos" className="nav-link">Frentes</Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/doacao" className="nav-link">Doações</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/celula" className="nav-link">Celula</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/" className="nav-link">Sair</Link>
                 </li>
               </ul>
             </nav>
