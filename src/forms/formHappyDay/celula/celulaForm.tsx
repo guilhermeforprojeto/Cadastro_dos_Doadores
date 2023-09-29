@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import './celulaForm.css'
+import './celulaForm.css'
 import { API } from '../../../assets/api/api';
 import Notify from '../../../components/react-toastify/react-toastify';
 import { Noti } from '../../../components/react-toastify/Noti';
@@ -16,7 +16,7 @@ interface Sacola {
 const CelulaForm: React.FC = () => {
 
   return (
-    <div className='container'>
+    <div className='containerCelula'>
 
       {/* LISTA 
       LISTA 

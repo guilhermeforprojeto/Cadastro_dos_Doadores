@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-// import './scacolaForm.css'
-import { tSacola } from './sacola';
+import './sacolaForm.css'
+import { tSacola } from './scacola';
 import { ToastContainer, toast } from 'react-toastify';
 import { API } from '../../../assets/api/api';
 import Notify from '../../../components/react-toastify/react-toastify';
@@ -231,9 +231,9 @@ const SacolaForm: React.FC = () => {
   };
 
   return (
-    <div className='container'>
+    <div className='containerSacola'>
       <Notify notificacao={noti} />
-      <form className='container-form' onSubmit={handleSubmit}>
+      <form className='containerformSacola' onSubmit={handleSubmit}>
         <h1>Cadastro de Sacolinhas</h1>
         <div>
           <label>Código</label>
@@ -246,7 +246,7 @@ const SacolaForm: React.FC = () => {
           />
         </div>
 
-        <div>
+        <div className='formSelecCelula' >
           <label>Frente Assistida ( PESQUISA(sonho) \ LISTAR CADASTRADAS)</label>
           <select value={frenteAssistidaSelecionada} name="nomefrenteassistida" onChangeCapture={handleFrenteAssistida}>
             <option> Seleciona uma frente assistida</option>
@@ -258,7 +258,7 @@ const SacolaForm: React.FC = () => {
 
           </select>
         </div>
-        <div>
+        <div className='formSelecCelula'>
           <label>Nome Assistido(arrumar o editar)</label>
           <select name="assistido" onChange={handleAssistido} >
             <option value=''>Selecione uma frente primeiro</option>
@@ -269,7 +269,7 @@ const SacolaForm: React.FC = () => {
             ))}
           </select>
         </div>
-        <div>
+        <div  >
           <label>Observações</label>
           <input
             type="text"
