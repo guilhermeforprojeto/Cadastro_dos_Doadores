@@ -4,10 +4,7 @@ import { API } from '../../../assets/api/api';
 import Notify from '../../../components/react-toastify/react-toastify';
 import { Noti } from '../../../components/react-toastify/Noti';
 import {
-  addItemToStorage,
   readItemFromStorage,
-  deleteItemFromStorage,
-  clearItemFromStorage
 } from '../../../services/storage/storage';
 import { Doador } from '../doador/doador';
 import { tFrenteAssistidos } from './frenteassistidos';

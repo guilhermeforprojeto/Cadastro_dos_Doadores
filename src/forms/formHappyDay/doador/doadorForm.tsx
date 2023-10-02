@@ -204,6 +204,8 @@ const DoadorForm: React.FC = () => {
       setNoti({ tipo: "info", msg: response.data.message })
       // console.log(response)
     } catch (error) {
+      setNoti({ tipo: "error", msg: `Erro: ${error}` })
+
       console.error('Erro ao carregar sacolas:', error);
     }
 
@@ -218,6 +220,8 @@ const DoadorForm: React.FC = () => {
       setNoti({ tipo: "info", msg: response.data.message })
       // console.log(response)
     } catch (error) {
+      setNoti({ tipo: "error", msg: `Erro: ${error}` })
+
       console.error('Erro ao carregar sacolas:', error);
     }
   };
@@ -416,7 +420,7 @@ const DoadorForm: React.FC = () => {
                       value={formData.nome}
                       onChange={handleChange}
                     />) : (
-                    sacola.nome
+                    <div><label>Nome: </label> {sacola.nome}</div>
                   )}
                 </td>
                 <td>
@@ -427,7 +431,7 @@ const DoadorForm: React.FC = () => {
                       value={formData.contato}
                       onChange={handleChange}
                     />) : (
-                    sacola.contato
+                    <div><label>Contato: </label> {sacola.contato}</div>
                   )}
                 </td>
                 <td>
@@ -438,7 +442,8 @@ const DoadorForm: React.FC = () => {
                       value={formData.sacolinhas}
                       onChange={handleChange}
                     />) : (
-                    sacola.sacolinhas.join(", ")
+                    <div><label>Cod. Sacolinhas: </label> {sacola.sacolinhas.join(", ")}</div>
+
                   )}
                 </td>            <td>
                   {editingItemId === sacola.id ? (

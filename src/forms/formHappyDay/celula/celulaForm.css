@@ -1,4 +1,11 @@
-.containerCelula {
+.containerCelula-header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.containerCelulaBodyPage {
   max-width: 500px;
   margin: 0 auto;
   padding: 20px;
@@ -7,4 +14,13 @@
 
 .containerCelula h2 {
   color: azures;
+}
+
+.actBtnCelula {
+  display: flex;
+
+}
+
+.actBtnCelula button {
+  margin: 20px 5px 5px 5px;
 }
