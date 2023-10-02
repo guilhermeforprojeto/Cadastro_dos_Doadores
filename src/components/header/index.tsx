@@ -26,7 +26,7 @@ export default function Header() {
 
         <div id="headerMenu">
           <button id="hamburger-menu" onClick={toggleMenu}>
-            <i className="fas fa-bars"></i>
+            <i className="fas fa-bars" />
           </button>
         </div>
       </header>

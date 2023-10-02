@@ -261,7 +261,7 @@ const FrenteAssistidosForm: React.FC = () => {
               name="assistidos"
               value={handleformData.assistidos}
               onChange={handleChange}
-              required
+            // required
             />
             <button onClick={handleAdicionarSacolinha}>Adicionar Assistido</button>
           </div>
@@ -301,18 +301,21 @@ const FrenteAssistidosForm: React.FC = () => {
         </thead>
         {formData.id.length == 0 ?
           frentesList.map((sacola) => (
-            <tbody>
+            <tbody className='tbodyFrentesAss'>
               <tr key={sacola.id}>
                 <td>
                   {editingItemId === sacola.id ? (
-
-                    <input
-                      type="text"
-                      name="nome"
-                      value={formData.nome}
-                      onChange={handleChange}
-                    />) : (
-                    sacola.nome
+                    <div>
+                      <label>Frente</label>
+                      <input
+                        type="text"
+                        name="nome"
+                        value={formData.nome}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  ) : (
+                    <div><label>Frente Assistida: </label> {sacola.nome}</div>
                   )}
                 </td>
                 <td>
@@ -323,17 +326,20 @@ const FrenteAssistidosForm: React.FC = () => {
                       value={formData.assistidos}
                       onChange={handleChange}
                     />) : (
-                    sacola.assistidos.join(", ")
+                    <div><label>Assistidos:</label> {sacola.assistidos.join(", ")}</div>
                   )}
                 </td>
 
-                <td>
+                <td className="actbtn">
                   {/* {editingItemId === sacola.id ? (
                     <button onClick={() => handleSaveEdit(sacola.id)}>Salvar</button>
                   ) : (
                     <button onClick={() => handleEditClick(sacola.id)}>Editar</button>
                   )} */}
-                  <button onClick={() => handleDelete(sacola)}>Excluir</button>
+                  <details>
+                    <summary>Exluir</summary>
+                    <button onClick={() => handleDelete(sacola)}>Confirmar Exclusão</button>
+                  </details>
                 </td>
               </tr>
             </tbody>
