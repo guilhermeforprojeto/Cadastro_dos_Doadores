@@ -29,7 +29,7 @@ export default function Notify({ notificacao }: Props) {
     switch (notificacao.tipo) {
       case 'info':
         toast.info(notificacao.msg, {
-          position: 'bottom-right',
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -67,7 +67,7 @@ export default function Notify({ notificacao }: Props) {
   return (
 
     <ToastContainer
-      position="bottom-right"
+      position="top-right"
       autoClose={5000}
       hideProgressBar={false}
       closeOnClick
