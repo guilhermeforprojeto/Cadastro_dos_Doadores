@@ -1,7 +1,8 @@
 export interface tCelula {
-  id: string;
-  nome: string;
-  nomeLider: string;
-  contato: string;
-  obs: string
+  id: string,
+  nome: string,
+  nomeLider: string,
+  contatoLider: string,
+  obs: string,
+
 }

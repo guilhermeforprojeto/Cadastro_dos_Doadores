@@ -28,14 +28,14 @@ const CelulaForm: React.FC = () => {
     id: '',
     nome: '',
     nomeLider: '',
-    contato: '',
+    contatoLider: '',
     obs: ''
   });
   const [formData, setFormData] = useState<tCelula>({
     id: '',
     nomeLider: '',
     nome: '',
-    contato: '',
+    contatoLider: '',
     obs: '',
   });
 
@@ -61,7 +61,6 @@ const CelulaForm: React.FC = () => {
     );
     setSearchResults(filteredResults);
 
-    console.log(searchResults)
   }, [searchTerm, sacolasOP]);
 
   const HandleSearch = (searchTerm: string) => {
@@ -73,7 +72,7 @@ const CelulaForm: React.FC = () => {
       id: handleformData.id,
       nome: handleformData.nome,
       nomeLider: handleformData.nomeLider,
-      contato: handleformData.contato,
+      contatoLider: handleformData.contatoLider,
       obs: handleformData.obs,
     })
   };
@@ -94,7 +93,7 @@ const CelulaForm: React.FC = () => {
   //       id: '',
   //       status: '',
   //       nome: '',
-  //       contato: '',
+  //       contatoLider: '',
   //       Celula: [],
   //       obs: ''
   //     });
@@ -122,7 +121,7 @@ const CelulaForm: React.FC = () => {
       id: handleformData.id,
       nome: handleformData.nome,
       nomeLider: handleformData.nomeLider,
-      contato: handleformData.contato,
+      contatoLider: handleformData.contatoLider,
       obs: handleformData.obs,
     })
     // console.log(formData)
@@ -146,7 +145,7 @@ const CelulaForm: React.FC = () => {
         id: '',
         status: '',
         nome: '',
-        contato: '',
+        Contato: '',
         CelulaSelecionadas: [],
         CelulaAtual: '',
         obs: ''
@@ -189,12 +188,11 @@ const CelulaForm: React.FC = () => {
 
   const loadCelulaes = async () => {
     try {
-      const response = await API.get('/celula'); // Substitua pela sua rota de API
+      const response = await API.get('/celulas'); // Substitua pela sua rota de API
       // setSacolasOP(response.data);
-      console.log(response.data);
-      setCelulaList(response.data.Celulaes)
+      setCelulaList(response.data.celulas)
       // setSacolasOP(response.data.Celulaes)
-      // console.log(response.data.Celulaes)
+      console.log(response.data.celulas)
       setNoti({ tipo: "info", msg: response.data.message })
       // console.log(response)
     } catch (error) {
@@ -205,11 +203,11 @@ const CelulaForm: React.FC = () => {
 
   };
   const SaveForm = async () => {
-    console.warn("SaveForm diz")
-    console.log(formData)
-    console.log(handleformData)
+    // console.warn("SaveForm diz")
+    // console.log(formData)
+    // console.log(handleformData)
     try {
-      const response = await API.post('/celula', formData); // Substitua pela sua rota de API
+      const response = await API.post('/celulas', formData); // Substitua pela sua rota de API
       setNoti({ tipo: "success", msg: response.data.message })
       // console.log(response.data)
       if (response.status === 201) {
@@ -219,14 +217,14 @@ const CelulaForm: React.FC = () => {
           id: '',
           nome: '',
           nomeLider: '',
-          contato: '',
+          contatoLider: '',
           obs: ''
         });
         // setFormData({
         //   id: '',
         //   status: '',
         //   nome: '',
-        //   contato: '',
+        //   Contato: '',
         //   Celula: [],
         //   obs: ''
         // });
@@ -239,7 +237,7 @@ const CelulaForm: React.FC = () => {
     catch (error) {
       const deuruim: any = error
       setNoti({ tipo: "error", msg: `${deuruim.response.data.message}` })
-      console.warn(formData)
+      // console.warn(formData)
     }
   }
 
@@ -268,7 +266,7 @@ const CelulaForm: React.FC = () => {
           <div>
             <label>Nome do Líder</label>
             <input
-              type="number"
+              type="text"
               name="nomeLider"
               value={handleformData.nomeLider}
               onChange={handleChange}
@@ -276,11 +274,11 @@ const CelulaForm: React.FC = () => {
             />
           </div>
           <div>
-            <label>Contato  do Líder</label>
+            <label>Contato do Líder</label>
             <input
               type="text"
-              name="contato"
-              value={handleformData.contato}
+              name="contatoLider"
+              value={handleformData.contatoLider}
               onChange={handleChange}
               required
             />
@@ -295,8 +293,8 @@ const CelulaForm: React.FC = () => {
               required
             />
           </div>
-          <div className='actBtnCelula'>
 
+          <div className='actBtnCelula'>
             <button >Limpar</button>
             <button onClick={SaveForm}>Salvar</button>
           </div>
@@ -306,14 +304,14 @@ const CelulaForm: React.FC = () => {
     {/* LISTA 
     LISTA 
     LISTA  */}
-    {/* <div className='tableContainerFrenteAss' >
+    <div className='tableContainerFrenteAss' >
       <label>Listagem - Celulaes</label>
       <table>
         <thead>
           <tr>
             <th>Nome</th>
             <th>Nome Lider</th>
-            <th>Contato</th>
+            <th>contatoLider</th>
             <th>obs</th>
           </tr>
         </thead>
@@ -336,11 +334,11 @@ const CelulaForm: React.FC = () => {
                   {editingItemId === sacola.id ? (
                     <input
                       type="text"
-                      name="contato"
-                      value={formData.contato}
+                      name="contatoLider"
+                      value={formData.contatoLider}
                       onChange={handleChange}
                     />) : (
-                    <div><label>Contato: </label> {sacola.contato}</div>
+                    <div><label>contatoLider: </label> {sacola.contatoLider}</div>
                   )}
                 </td>
                 <td>
@@ -362,7 +360,7 @@ const CelulaForm: React.FC = () => {
           ))
           : <span><h1>Não existe Celula cadastradas</h1></span>}
       </table>
-    </div> */}
+    </div>
 
   </>
   );
