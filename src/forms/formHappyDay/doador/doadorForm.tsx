@@ -9,20 +9,35 @@ import { Doador } from './doador';
 interface OpcaoSacolinha {
   codigo: string;
 }
-
+interface OpcaoCelula {
+  nome: string;
+}
 const DoadorForm: React.FC = () => {
   const [sacolas, setSacolas] = useState<Doador[]>([]);
   const [sacolasOP, setSacolasOP] = useState<OpcaoSacolinha[]>([])
+  const [celulaOP, setCelulaOP] = useState<OpcaoCelula[]>([])
   const [sacolasData, setSacolasData] = useState<OpcaoSacolinha[]>([])
+  const [celulaData, setCelulaData] = useState<OpcaoSacolinha[]>([])
   const [noti, setNoti] = useState<Noti>({ tipo: '', msg: '' });
   const [doadorList, setDoadorList] = useState<Doador[]>([]);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [dataHoraAtual, setDataHoraAtual] = useState(new Date());
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTermCelula, setSearchTermCelula] = useState<string>('');
   const [searchResults, setSearchResults] = useState<OpcaoSacolinha[]>([]);
+  const [searchResultCelula, setSearchResultsCelula] = useState<OpcaoCelula[]>([]);
   const [opensearchResults, OpensetSearchResults] = useState<Boolean>(false);
+  const [opensearchResultsCelula, OpensetSearchResultsCelula] = useState<Boolean>(false);
 
   const [namePreSearch, setNamePreSearch] = useState('')
+
+  const [handleformDataCelula, setHandleFormDataCelula] = useState<any>({
+    id: '',
+    nome: '',
+    nomeLider: '',
+    contatoLider: '',
+    obs: ''
+  });
 
   const [handleformData, setHandleFormData] = useState<any>({
     id: '',
@@ -41,8 +56,23 @@ const DoadorForm: React.FC = () => {
     sacolinhas: [''],
     obs: '',
   });
+  // Atualize a lista de resultados à medida que o usuário digita
+  useEffect(() => {
+
+    const filteredResultsSacolas = sacolasOP.filter((opcao) =>
+      opcao.codigo.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    const filteredResultsCelula = celulaOP.filter((opcao) =>
+      opcao.nome.toLowerCase().includes(searchTermCelula.toLowerCase())
+    );
+    setSearchResults(filteredResultsSacolas);
+    setSearchResultsCelula(filteredResultsCelula);
+
+    console.log(searchResults)
+  }, [searchTerm, sacolasOP, searchTermCelula, celulaOP]);
 
   useEffect(() => {
+    loadCelula()
     loadDoadores()
     loadSacolas();
     const interval = setInterval(() => {
@@ -56,20 +86,21 @@ const DoadorForm: React.FC = () => {
       // ...suas opções de sacolinha inicial
     ];
     setSacolasOP(initialOptions);
+    const initialOptionsCelula: OpcaoCelula[] = [
+      // ...suas opções de sacolinha inicial
+    ];
+    setCelulaOP(initialOptionsCelula);
   }, []);
 
-  // Atualize a lista de resultados à medida que o usuário digita
-  useEffect(() => {
-    const filteredResults = sacolasOP.filter((opcao) =>
-      opcao.codigo.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setSearchResults(filteredResults);
 
-    console.log(searchResults)
-  }, [searchTerm, sacolasOP]);
 
   const HandleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm);
+  };
+  const HandleSearchCelula = (searchTerm: string) => {
+    setHandleFormDataCelula(searchTermCelula)
+    console.log(searchTerm)
+    setSearchTermCelula(searchTerm);
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setHandleFormData({ ...handleformData, [e.target.name]: e.target.value, status: "Doada" });
@@ -225,10 +256,24 @@ const DoadorForm: React.FC = () => {
       console.error('Erro ao carregar sacolas:', error);
     }
   };
+
+
+  const loadCelula = async () => {
+    try {
+      const response = await API.get('/celulas'); // Substitua pela sua rota de API
+      setCelulaOP(response.data.celulas);
+      setCelulaData(response.data)
+      // console.log("sacolasData")
+      console.log(celulaData)
+      setNoti({ tipo: "success", msg: "Sistemas Carregado" })
+      // console.log(response)
+    } catch (error) {
+      setNoti({ tipo: "error", msg: `Erro: ${error}` })
+
+      console.error('Erro ao carregar sacolas:', error);
+    }
+  };
   const SaveForm = async () => {
-    console.warn("SaveForm diz")
-    console.log(formData)
-    console.log(handleformData)
     try {
       const response = await API.post('/doadores', formData); // Substitua pela sua rota de API
       setNoti({ tipo: "success", msg: response.data.message })
@@ -291,10 +336,12 @@ const DoadorForm: React.FC = () => {
           <div>
             <label>Contato</label>
             <input
-              type="number"
+              type="tel"
               name="contato"
               value={handleformData.contato}
               onChange={handleChange}
+              pattern="\([0-9]{2}\) [0-9]{1}\.[0-9]{4}-[0-9]{4}"
+              placeholder="(XX) X.XXXX-XXXX" // Exemplo de placeholder para orientar o formato
               required
             />
           </div>
@@ -307,6 +354,35 @@ const DoadorForm: React.FC = () => {
               onChange={handleChange}
               required
             />
+          </div>
+          <label>Celula</label>
+          <div>
+            <input
+              type="text"
+              onClick={() => OpensetSearchResultsCelula(true)}
+              name="celula"
+              placeholder="Pesquisar celula..."
+              value={searchTermCelula}
+              onChange={(e) => {
+                HandleSearchCelula(e.target.value)
+                setHandleFormDataCelula(searchResultCelula)
+              }}
+            />Selecione a Celula:
+            {!opensearchResultsCelula ?
+              "" :
+              <ul >
+                {searchResultCelula.map((opcao: OpcaoCelula) => (
+                  opcao.nome == searchTermCelula ? "Celula: " + searchTermCelula + " selecionada" :
+                    <li onClick={() => {
+                      setSearchTermCelula(opcao.nome)
+                      setHandleFormDataCelula(searchTermCelula)
+                    }}
+                      value={opcao.nome}
+                      key={opcao.nome}>
+                      {opcao.nome}</li>
+                ))}
+              </ul>
+            }
           </div>
           <div>
             <div>
@@ -325,7 +401,6 @@ const DoadorForm: React.FC = () => {
                 />Selecione a sacolinha:
                 {!opensearchResults ?
                   "" :
-
                   <ul >
                     {searchResults.map((opcao: OpcaoSacolinha) => (
                       opcao.codigo == searchTerm ? "Código " + searchTerm + " selecionado" :
@@ -338,25 +413,8 @@ const DoadorForm: React.FC = () => {
                           {opcao.codigo}</li>
                     ))}
                   </ul>
-
                 }
-
               </div>
-
-              {/* <select
-                name="sacolinhasDisponiveis"
-                value={handleformData.sacolinhaAtual}
-                onChange={(e) => {
-                  setHandleFormData({ ...handleformData, sacolinhaAtual: e.target.value });
-                }}
-              >
-                <option value="">Selecione uma sacolinha</option>
-                {sacolasOP.map((opcao: OpcaoSacolinha) => (
-                  <option key={opcao.codigo} value={opcao.codigo}>
-                    {opcao.codigo}
-                  </option>
-                ))}
-              </select> */}
               <button onClick={handleAdicionarSacolinha}>Adicionar Sacolinha</button>
             </div>
             <div>
@@ -391,6 +449,7 @@ const DoadorForm: React.FC = () => {
             <th>Nome</th>
             <th>Contato</th>
             <th>Sacolinhas</th>
+            <th>Celula</th>
             <th>obs</th>
             <th>Ações</th>
           </tr>
@@ -446,6 +505,16 @@ const DoadorForm: React.FC = () => {
 
                   )}
                 </td>            <td>
+                  {editingItemId === sacola.id ? (
+                    <input
+                      type="text"
+                      name="obs"
+                      value={formData.obs}
+                      onChange={handleChange}
+                    />) : (
+                    sacola.obs
+                  )}
+                </td>          <td>
                   {editingItemId === sacola.id ? (
                     <input
                       type="text"
