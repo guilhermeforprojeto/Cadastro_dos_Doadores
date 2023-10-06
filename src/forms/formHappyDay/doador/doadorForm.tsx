@@ -356,6 +356,26 @@ const DoadorForm: React.FC = () => {
             />
           </div>
           <label>Celula</label>
+
+
+          <select >
+            {searchResultCelula.map((opcao: OpcaoCelula) => (
+              opcao.nome == searchTermCelula ? "Celula: " + searchTermCelula + " selecionada" :
+                <option onClick={() => {
+                  setSearchTermCelula(opcao.nome)
+                  setHandleFormDataCelula(searchTermCelula)
+                }}
+                  value={opcao.nome}
+                  key={opcao.nome}>
+                  {opcao.nome}</option>
+            ))}
+          </select>
+
+
+
+
+          {/* 
+
           <div>
             <input
               type="text"
@@ -383,7 +403,17 @@ const DoadorForm: React.FC = () => {
                 ))}
               </ul>
             }
-          </div>
+          </div> */}
+
+
+
+
+
+
+
+
+
+
           <div>
             <div>
               <label>Pesquisar Sacolinhas</label>
