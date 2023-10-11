@@ -168,11 +168,11 @@ const DoadorForm: React.FC = () => {
   const handleDelete = async (FRENTE: Doador) => {
     try {
       await API.delete(`/doadores/${FRENTE.id}`); // Substitua pela sua rota de API
-      setNoti({ tipo: "success", msg: "FRENTE " + FRENTE.nome + " deletada com suceso" })
+      setNoti({ tipo: "success", msg: "Doação " + FRENTE.nome + " deletada com suceso" })
       loadDoadores();
     } catch (error) {
       setNoti({ tipo: "error", msg: "Não foi possivel apagar " })
-      console.error('Erro ao excluir FRENTE:', error);
+      console.error('Erro ao excluir Doação:', error);
     }
   };
 
@@ -190,7 +190,7 @@ const DoadorForm: React.FC = () => {
       })
       setHandleFormData({
         ...handleformData,
-        sacolinhasSelecionadas: [...handleformData.sacolinhasSelecionadas, handleformData.sacolinhaAtual],
+        sacolinhasSelecionadas: [...handleformData.sacolinhasSelecionadas, searchTerm],
         sacolinhaAtual: '',
       });
       OpensetSearchResults(false)
@@ -265,7 +265,7 @@ const DoadorForm: React.FC = () => {
       setCelulaData(response.data)
       // console.log("sacolasData")
       console.log(celulaData)
-      setNoti({ tipo: "success", msg: "Sistemas Carregado" })
+      setNoti({ tipo: "success", msg: "Sistema Carregado" })
       // console.log(response)
     } catch (error) {
       setNoti({ tipo: "error", msg: `Erro: ${error}` })
@@ -273,6 +273,21 @@ const DoadorForm: React.FC = () => {
       console.error('Erro ao carregar sacolas:', error);
     }
   };
+
+  const CleanForm = async () => {
+
+    setNoti({ tipo: "success", msg: "Limpo!" })
+    setHandleFormData({
+      id: '',
+      nome: '',
+      status: '',
+      contato: '',
+      sacolinhasSelecionadas: [],
+      sacolinhaAtual: '',
+      obs: ''
+    });
+  }
+
   const SaveForm = async () => {
     try {
       const response = await API.post('/doadores', formData); // Substitua pela sua rota de API
@@ -340,8 +355,7 @@ const DoadorForm: React.FC = () => {
               name="contato"
               value={handleformData.contato}
               onChange={handleChange}
-              pattern="\([0-9]{2}\) [0-9]{1}\.[0-9]{4}-[0-9]{4}"
-              placeholder="(XX) X.XXXX-XXXX" // Exemplo de placeholder para orientar o formato
+              placeholder="(99) 99999-9999"
               required
             />
           </div>
@@ -358,7 +372,8 @@ const DoadorForm: React.FC = () => {
           <label>Celula</label>
 
 
-          <select >
+          <select required>
+            <option>Seleciona uma Celula</option>
             {searchResultCelula.map((opcao: OpcaoCelula) => (
               opcao.nome == searchTermCelula ? "Celula: " + searchTermCelula + " selecionada" :
                 <option onClick={() => {
@@ -438,6 +453,11 @@ const DoadorForm: React.FC = () => {
                           setSearchTerm(opcao.codigo)
                           setHandleFormData({ ...handleformData, sacolinhaAtual: searchTerm })
                         }}
+
+                          onChange={() => {
+                            setSearchTerm(opcao.codigo)
+                            setHandleFormData({ ...handleformData, sacolinhaAtual: searchTerm })
+                          }}
                           value={opcao.codigo}
                           key={opcao.codigo}>
                           {opcao.codigo}</li>
@@ -462,7 +482,7 @@ const DoadorForm: React.FC = () => {
             </div>
 
           </div>
-          <button >Limpar</button>
+          <button onClick={CleanForm} >Limpar</button>
           <button onClick={SaveForm}>Salvar</button>
         </form>
       </div>
