@@ -276,7 +276,7 @@ const CelulaForm: React.FC = () => {
           <div>
             <label>Contato do Líder</label>
             <input
-              type="text"
+              type="tel"
               name="contatoLider"
               value={handleformData.contatoLider}
               onChange={handleChange}

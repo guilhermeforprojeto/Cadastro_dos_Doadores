@@ -368,7 +368,7 @@ const DoadorForm: React.FC = () => {
               name="contato"
               value={handleformData.contato}
               onChange={handleChange}
-              placeholder="(99) 99999-9999"
+              // placeholder="(99) 99999-9999"
               required
             />
           </div>
