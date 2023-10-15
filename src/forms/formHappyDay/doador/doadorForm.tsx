@@ -178,38 +178,51 @@ const DoadorForm: React.FC = () => {
 
 
   const handleAdicionarSacolinha = () => {
-    if (handleformData.sacolinhaAtual && !handleformData.sacolinhasSelecionadas.includes(handleformData.sacolinhaAtual)) {
-      setHandleFormData({
-        id: '',
-        status: '',
-        nome: '',
-        contato: '',
-        sacolinhasSelecionadas: [],
-        sacolinhaAtual: '',
-        obs: ''
-      })
-      setHandleFormData({
-        ...handleformData,
-        sacolinhasSelecionadas: [...handleformData.sacolinhasSelecionadas, searchTerm],
-        sacolinhaAtual: '',
-      });
-      OpensetSearchResults(false)
-      setSearchTerm('')
-    } else {
-      console.error("Sacolainha já cadastrada!")
-      setNoti({ tipo: 'error', msg: 'Sacolainha já cadastrada!' })
-    }
+    // if (handleformData.sacolinhaAtual && !handleformData.sacolinhasSelecionadas.includes(handleformData.sacolinhaAtual)) {
+    //   setHandleFormData({
+    //     id: '',
+    //     status: '',
+    //     nome: '',
+    //     contato: '',
+    //     sacolinhasSelecionadas: [],
+    //     sacolinhaAtual: '',
+    //     obs: ''
+    //   })
+    //   setHandleFormData({
+    //     ...handleformData,
+    //     sacolinhasSelecionadas: [...handleformData.sacolinhasSelecionadas, searchTerm],
+    //     sacolinhaAtual: '',
+    //   });
+    //   OpensetSearchResults(false)
+    //   setSearchTerm('')
+    // } else {
+    //   console.error("Sacolainha já cadastrada!")
+    //   setNoti({ tipo: 'error', msg: 'Sacolainha já cadastrada!' })
+    // }
+    setHandleFormData({
+      ...handleformData,
+      sacolinhasSelecionadas: [...handleformData.sacolinhasSelecionadas, searchTerm],
+      sacolinhaAtual: '',
+    });
+    // setHandleFormData({
+    //   ...handleformData,
+    //   sacolinhasSelecionadas: [''],
+    //   sacolinhaAtual: '',
+    // });
   };
 
   const handleRemoverSacolinha = (sacolinha: string) => {
-    const novaListaSacolinhas = handleformData.sacolinhasSelecionadas.filter(
-      (item: string) => item !== sacolinha
-    );
-
+    // const novaListaSacolinhas = handleformData.sacolinhasSelecionadas.filter(
+    //   (item: string) => item !== sacolinha
+    // );
     setHandleFormData({
       ...handleformData,
-      sacolinhasSelecionadas: novaListaSacolinhas,
+      sacolinhasSelecionadas: [...handleformData.sacolinhasSelecionadas.filter(
+        (item: string) => item !== sacolinha
+      )],
     });
+    console.log(sacolinha)
+    console.log(handleformData.sacolinhasSelecionadas)
   };
 
 
@@ -449,15 +462,17 @@ const DoadorForm: React.FC = () => {
                   <ul >
                     {searchResults.map((opcao: OpcaoSacolinha) => (
                       opcao.codigo == searchTerm ? "Código " + searchTerm + " selecionado" :
-                        <li onClick={() => {
-                          setSearchTerm(opcao.codigo)
-                          setHandleFormData({ ...handleformData, sacolinhaAtual: searchTerm })
-                        }}
-
+                        <li
                           onChange={() => {
                             setSearchTerm(opcao.codigo)
                             setHandleFormData({ ...handleformData, sacolinhaAtual: searchTerm })
                           }}
+                          onClick={() => {
+                            setSearchTerm(opcao.codigo)
+                            setHandleFormData({ ...handleformData, sacolinhaAtual: searchTerm })
+                          }}
+
+
                           value={opcao.codigo}
                           key={opcao.codigo}>
                           {opcao.codigo}</li>
@@ -467,6 +482,8 @@ const DoadorForm: React.FC = () => {
               </div>
               <button onClick={handleAdicionarSacolinha}>Adicionar Sacolinha</button>
             </div>
+
+
             <div>
               <label>Sacolinhas Selecionadas:</label>
               <ul>
@@ -517,7 +534,7 @@ const DoadorForm: React.FC = () => {
                       value={formData.status}
                       onChange={handleChange}
                     />) : (
-                    sacola.status
+                    <div><label> Status:</label> {sacola.status} </div>
                   )}
                 </td>
                 <td>
@@ -562,17 +579,9 @@ const DoadorForm: React.FC = () => {
                       value={formData.obs}
                       onChange={handleChange}
                     />) : (
-                    sacola.obs
-                  )}
-                </td>          <td>
-                  {editingItemId === sacola.id ? (
-                    <input
-                      type="text"
-                      name="obs"
-                      value={formData.obs}
-                      onChange={handleChange}
-                    />) : (
-                    sacola.obs
+                    <div><label>Observações: </label> {sacola.obs}</div>
+
+
                   )}
                 </td>
                 <td>
