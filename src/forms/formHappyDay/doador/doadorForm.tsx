@@ -302,41 +302,68 @@ const DoadorForm: React.FC = () => {
   }
 
   const SaveForm = async () => {
-    try {
-      const response = await API.post('/doadores', formData); // Substitua pela sua rota de API
-      setNoti({ tipo: "success", msg: response.data.message })
-      // console.log(response.data)
-      if (response.status === 201) {
-        setNoti({ tipo: "success", msg: response.data.message })
-        // console.log('Doador criado com sucesso!', response.data.message);
-        setHandleFormData({
-          id: '',
-          nome: '',
-          status: '',
-          contato: '',
-          sacolinhasSelecionadas: [],
-          sacolinhaAtual: '',
-          obs: ''
-        });
-        // setFormData({
-        //   id: '',
-        //   status: '',
-        //   nome: '',
-        //   contato: '',
-        //   sacolinhas: [],
-        //   obs: ''
-        // });
-        loadDoadores()
-      } else {
-        console.error('Erro ao criar Doador:', response.data.message);
+    if (handleformData.sacolinhasSelecionadas.length === 0) {
+      setNoti({ tipo: "warning", msg: "Adicione ao menos 1 sacolinha!" })
+    }
+    console.log('formData.id.length > 0:', formData.id.length > 0);
+    console.log('formData.status.length > 0:', formData.status.length > 0);
+    console.log('formData.nome.length > 0:', formData.nome.length > 0);
+    console.log('formData.contato.length > 0:', formData.contato.length > 0);
+    console.log('formData.obs.length > 0:', formData.obs.length > 0);
+    console.log('handleformData.sacolinhasSelecionadas.length > 0:', handleformData.sacolinhasSelecionadas.length > 0);
 
+    if (handleformData.status.length > 0 && handleformData.nome.length > 0 && handleformData.contato.length > 0 && handleformData.obs.length > 0 && handleformData.sacolinhasSelecionadas.length > 0) {
+
+      try {
+        const response = await API.post('/doadores', formData);
+        setNoti({ tipo: "success", msg: response.data.message })
+        if (response.status === 201) {
+          setNoti({ tipo: "success", msg: response.data.message })
+          setHandleFormData({
+            id: '',
+            nome: '',
+            status: '',
+            contato: '',
+            sacolinhasSelecionadas: [],
+            sacolinhaAtual: '',
+            obs: ''
+          });
+          setFormData({
+            id: '',
+            status: '',
+            nome: '',
+            contato: '',
+            sacolinhas: [''],
+            obs: '',
+          })
+          setSearchTerm('')
+          OpensetSearchResults(false)
+          // setFormData({
+          //   id: '',
+          //   status: '',
+          //   nome: '',
+          //   contato: '',
+          //   sacolinhas: [],
+          //   obs: ''
+          // });
+          loadDoadores()
+        } else {
+          console.error('Erro ao criar Doador:', response.data.message);
+
+        }
       }
+      catch (error) {
+        const deuruim: any = error
+        setNoti({ tipo: "error", msg: `${deuruim.response.data.message}` })
+        console.warn(formData)
+      }
+    } else {
+      setNoti({ tipo: "warning", msg: "Preencha todos campos!" })
+
+      // console.log(response.data)
     }
-    catch (error) {
-      const deuruim: any = error
-      setNoti({ tipo: "error", msg: `${deuruim.response.data.message}` })
-      console.warn(formData)
-    }
+
+
   }
 
 
@@ -386,7 +413,7 @@ const DoadorForm: React.FC = () => {
 
 
           <select required>
-            <option>Seleciona uma Celula</option>
+            <option>Selecione uma Celula</option>
             {searchResultCelula.map((opcao: OpcaoCelula) => (
               opcao.nome == searchTermCelula ? "Celula: " + searchTermCelula + " selecionada" :
                 <option onClick={() => {
@@ -461,7 +488,7 @@ const DoadorForm: React.FC = () => {
                   "" :
                   <ul >
                     {searchResults.map((opcao: OpcaoSacolinha) => (
-                      opcao.codigo == searchTerm ? "Código " + searchTerm + " selecionado" :
+                      opcao.codigo == searchTerm ? "Código " + searchTerm + ", toque para adicionar" :
                         <li
                           onChange={() => {
                             setSearchTerm(opcao.codigo)
@@ -500,7 +527,7 @@ const DoadorForm: React.FC = () => {
 
           </div>
           <button onClick={CleanForm} >Limpar</button>
-          <button onClick={SaveForm}>Salvar</button>
+          <button type='reset' onClick={SaveForm}>Salvar</button>
         </form>
       </div>
     </div>
