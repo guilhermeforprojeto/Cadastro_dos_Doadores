@@ -276,17 +276,19 @@ const SacolaForm: React.FC = () => {
           </select> */}
         </div>
         <div className='formSelecCelula'>
-          <label>Nome Assistido(arrumar o editar)</label>
-          <select name="assistido" onChange={handleAssistido} >
+          <label>Nome Assistido</label>
+          <input type='text'>
+          </input>
+          {/* <select name="assistido" onChange={handleAssistido} >
             <option value=''>Selecione uma frente primeiro</option>
             {dataassistidos.map((assistido: any) => (
               <option key={assistido.id} value={assistido}>
                 {assistido}
               </option>
             ))}
-          </select>
+          </select> */}
         </div>
-        <div  >
+        {/* <div  >
           <label>Observações</label>
           <input
             type="text"
@@ -295,13 +297,13 @@ const SacolaForm: React.FC = () => {
             onChange={handleChange}
             required
           />
-        </div>
+        </div> */}
 
         <button type="submit">Criar Sacola</button>
         <br></br>
         <button >Limpar </button>
         <br></br>
-        <button onClick={POPULARBANCO}>CUIDADO!! Adiconar 1000 sacolas!!! </button>
+        {/* <button onClick={POPULARBANCO}>CUIDADO!! Adiconar 1000 sacolas!!! </button> */}
       </form>
 
       <br></br>
