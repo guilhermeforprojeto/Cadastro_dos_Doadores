@@ -247,8 +247,25 @@ const SacolaForm: React.FC = () => {
         </div>
 
         <div className='formSelecCelula' >
-          <label>Frente Assistida ( PESQUISA(sonho) \ LISTAR CADASTRADAS)</label>
-          <select value={frenteAssistidaSelecionada} name="nomefrenteassistida" onChangeCapture={handleFrenteAssistida}>
+          <label>Frente Assistida</label>
+          <select id="instituicoes" name="instituicoes">
+            <option value="Null">Selecione uma frente</option>
+            <option value="Manancial de Deboras">Manancial de Deboras</option>
+            <option value="Morada do Altíssimo">Morada do Altíssimo</option>
+            <option value="Asilo Ananias">Asilo Ananias</option>
+            <option value="Fundação Casa Masculina">Fundação Casa Masculina</option>
+            <option value="Abrigo Mãos Pequenas Casa 3">Abrigo Mãos Pequenas Casa 3</option>
+            <option value="Abrigo Mãos Pequenas Casa 4">Abrigo Mãos Pequenas Casa 4</option>
+            <option value="Abrigo Mãos Pequenas Casa 5">Abrigo Mãos Pequenas Casa 5</option>
+            <option value="Asilo Nosso Lar">Asilo Nosso Lar</option>
+            <option value="Tanque de Betesda">Tanque de Betesda</option>
+            <option value="Fundação Casa Feminina">Fundação Casa Feminina</option>
+            <option value="Presídio CDP">Presídio CDP</option>
+            <option value="Albergue">Albergue</option>
+            <option value="Tamarutaca">Tamarutaca</option>
+            <option value="Pão da Vida">Pão da Vida</option>
+          </select>
+          {/* <select value={frenteAssistidaSelecionada} name="nomefrenteassistida" onChangeCapture={handleFrenteAssistida}>
             <option> Seleciona uma frente assistida</option>
             {frenteAss.map((opcao) => (
               <option key={opcao.id} data-id={opcao.id} value={opcao.nome}>
@@ -256,7 +273,7 @@ const SacolaForm: React.FC = () => {
               </option>
             ))}
 
-          </select>
+          </select> */}
         </div>
         <div className='formSelecCelula'>
           <label>Nome Assistido(arrumar o editar)</label>
