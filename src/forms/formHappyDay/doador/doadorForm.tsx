@@ -68,7 +68,7 @@ const DoadorForm: React.FC = () => {
     setSearchResults(filteredResultsSacolas);
     setSearchResultsCelula(filteredResultsCelula);
 
-    console.log(searchResults)
+    // console.log(searchResults)
   }, [searchTerm, sacolasOP, searchTermCelula, celulaOP]);
 
   useEffect(() => {
@@ -99,7 +99,7 @@ const DoadorForm: React.FC = () => {
   };
   const HandleSearchCelula = (searchTerm: string) => {
     setHandleFormDataCelula(searchTermCelula)
-    console.log(searchTerm)
+    // console.log(searchTerm)
     setSearchTermCelula(searchTerm);
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -222,8 +222,8 @@ const DoadorForm: React.FC = () => {
         (item: string) => item !== sacolinha
       )],
     });
-    console.log(sacolinha)
-    console.log(handleformData.sacolinhasSelecionadas)
+    // console.log(sacolinha)
+    // console.log(handleformData.sacolinhasSelecionadas)
   };
 
 
@@ -242,7 +242,7 @@ const DoadorForm: React.FC = () => {
     try {
       const response = await API.get('/doadores'); // Substitua pela sua rota de API
       // setSacolasOP(response.data);
-      console.log(response.data);
+      // console.log(response.data);
       setDoadorList(response.data.doadores)
       // setSacolasOP(response.data.doadores)
       // console.log(response.data.doadores)
@@ -257,7 +257,7 @@ const DoadorForm: React.FC = () => {
   };
   const loadSacolas = async () => {
     try {
-      const response = await API.get('/sacolas'); // Substitua pela sua rota de API
+      const response = await API.get('/sacolas:Registrada'); // Substitua pela sua rota de API
       setSacolasOP(response.data.sacolas);
       setSacolasData(response.data)
       // console.log("sacolasData")
@@ -302,16 +302,36 @@ const DoadorForm: React.FC = () => {
     });
   }
 
+
+  const updateSacolas = async () => {
+    console.log(handleformData)
+    // try {
+    //   const response = await API.get('/sacolas'); // Substitua pela sua rota de API
+    //   setSacolasOP(response.data.sacolas);
+    //   setSacolasData(response.data)
+    //   // console.log("sacolasData")
+    //   // console.log(sacolasData)
+    //   setNoti({ tipo: "info", msg: response.data.message })
+    //   // console.log(response)
+    // } catch (error) {
+    //   setNoti({ tipo: "error", msg: `Erro: ${error}` })
+
+    //   console.error('Erro ao carregar sacolas:', error);
+    // }
+  };
+
+
+
   const SaveForm = async () => {
     if (handleformData.sacolinhasSelecionadas.length === 0) {
       setNoti({ tipo: "warning", msg: "Adicione ao menos 1 sacolinha!" })
     }
-    console.log('formData.id.length > 0:', formData.id.length > 0);
-    console.log('formData.status.length > 0:', formData.status.length > 0);
-    console.log('formData.nome.length > 0:', formData.nome.length > 0);
-    console.log('formData.contato.length > 0:', formData.contato.length > 0);
-    console.log('formData.obs.length > 0:', formData.obs.length > 0);
-    console.log('handleformData.sacolinhasSelecionadas.length > 0:', handleformData.sacolinhasSelecionadas.length > 0);
+    // console.log('formData.id.length > 0:', formData.id.length > 0);
+    // console.log('formData.status.length > 0:', formData.status.length > 0);
+    // console.log('formData.nome.length > 0:', formData.nome.length > 0);
+    // console.log('formData.contato.length > 0:', formData.contato.length > 0);
+    // console.log('formData.obs.length > 0:', formData.obs.length > 0);
+    // console.log('handleformData.sacolinhasSelecionadas.length > 0:', handleformData.sacolinhasSelecionadas.length > 0);
 
     if (handleformData.status.length > 0 && handleformData.nome.length > 0 && handleformData.contato.length > 0 && handleformData.obs.length > 0 && handleformData.sacolinhasSelecionadas.length > 0) {
 
@@ -363,6 +383,10 @@ const DoadorForm: React.FC = () => {
 
       // console.log(response.data)
     }
+    //Atualiza a lista de sacoras 
+
+
+    updateSacolas()
 
 
   }
@@ -529,6 +553,7 @@ const DoadorForm: React.FC = () => {
           </div>
           <button onClick={CleanForm} >Limpar</button>
           <button type='reset' onClick={SaveForm}>Salvar</button>
+          <button type='reset' onClick={updateSacolas}>updateSacolas</button>
         </form>
       </div>
     </div>
