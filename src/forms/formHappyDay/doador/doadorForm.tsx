@@ -174,6 +174,7 @@ const DoadorForm: React.FC = () => {
       setNoti({ tipo: "error", msg: "Não foi possivel apagar " })
       console.error('Erro ao excluir Doação:', error);
     }
+    loadSacolas()
   };
 
 
@@ -257,7 +258,7 @@ const DoadorForm: React.FC = () => {
   };
   const loadSacolas = async () => {
     try {
-      const response = await API.get('/sacolas:Registrada'); // Substitua pela sua rota de API
+      const response = await API.get('/sacolas?status=Registrada'); // Substitua pela sua rota de API
       setSacolasOP(response.data.sacolas);
       setSacolasData(response.data)
       // console.log("sacolasData")
@@ -303,22 +304,6 @@ const DoadorForm: React.FC = () => {
   }
 
 
-  const updateSacolas = async () => {
-    console.log(handleformData)
-    // try {
-    //   const response = await API.get('/sacolas'); // Substitua pela sua rota de API
-    //   setSacolasOP(response.data.sacolas);
-    //   setSacolasData(response.data)
-    //   // console.log("sacolasData")
-    //   // console.log(sacolasData)
-    //   setNoti({ tipo: "info", msg: response.data.message })
-    //   // console.log(response)
-    // } catch (error) {
-    //   setNoti({ tipo: "error", msg: `Erro: ${error}` })
-
-    //   console.error('Erro ao carregar sacolas:', error);
-    // }
-  };
 
 
 
@@ -368,6 +353,8 @@ const DoadorForm: React.FC = () => {
           //   obs: ''
           // });
           loadDoadores()
+          loadSacolas()
+
         } else {
           console.error('Erro ao criar Doador:', response.data.message);
 
@@ -386,7 +373,6 @@ const DoadorForm: React.FC = () => {
     //Atualiza a lista de sacoras 
 
 
-    updateSacolas()
 
 
   }
@@ -431,7 +417,7 @@ const DoadorForm: React.FC = () => {
               name="obs"
               value={handleformData.obs}
               onChange={handleChange}
-              required
+
             />
           </div>
           <label>Celula</label>
@@ -499,16 +485,18 @@ const DoadorForm: React.FC = () => {
               <label>Pesquisar Sacolinhas</label>
               <div>
                 <input
-                  type="text"
+                  type="search"
+                  readOnly={false}
+                  placeholder="Pesquisar sacolinha..."
                   onClick={() => OpensetSearchResults(true)}
                   name="sacolinhasDisponiveis"
-                  placeholder="Pesquisar sacolinha..."
                   value={searchTerm}
                   onChange={(e) => {
                     setHandleFormData({ ...handleformData, sacolinhaAtual: searchTerm })
                     HandleSearch(e.target.value)
                   }}
-                />Selecione a sacolinha:
+                />
+                <hr></hr>Selecione a sacolinha:
                 {!opensearchResults ?
                   "" :
                   <ul >
@@ -553,7 +541,7 @@ const DoadorForm: React.FC = () => {
           </div>
           <button onClick={CleanForm} >Limpar</button>
           <button type='reset' onClick={SaveForm}>Salvar</button>
-          <button type='reset' onClick={updateSacolas}>updateSacolas</button>
+          <button type='reset' onClick={loadSacolas}>updateSacolas</button>
         </form>
       </div>
     </div>
