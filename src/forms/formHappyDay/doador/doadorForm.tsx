@@ -209,6 +209,7 @@ const DoadorForm: React.FC = () => {
     //   sacolinhasSelecionadas: [''],
     //   sacolinhaAtual: '',
     // });
+    setSearchTerm("")
   };
 
   const handleRemoverSacolinha = (sacolinha: string) => {
